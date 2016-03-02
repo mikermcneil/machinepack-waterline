@@ -1,0 +1,26 @@
+{
+  "name": "machinepack-waterline",
+  "version": "0.1.0",
+  "description": "A database-agnostic connectivity library for sending queries, managing dynamic db connections, committing/rolling back transactions, and more.",
+  "scripts": {
+    "test": "node ./node_modules/test-machinepack-mocha/bin/testmachinepack-mocha.js"
+  },
+  "keywords": [
+    "Waterline",
+    "machines",
+    "machinepack"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "machine": "12.1.0"
+  },
+  "devDependencies": {
+    "test-machinepack-mocha": "^2.0.0"
+  },
+  "machinepack": {
+    "friendlyName": "Waterline",
+    "machineDir": "machines/",
+    "machines": []
+  }
+}
