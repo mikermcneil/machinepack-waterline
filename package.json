@@ -7,10 +7,11 @@
   },
   "keywords": [
     "Waterline",
+    "ORM",
     "machines",
     "machinepack"
   ],
-  "author": "",
+  "author": "Mike McNeil",
   "license": "MIT",
   "dependencies": {
     "machine": "12.1.0"
@@ -21,6 +22,10 @@
   "machinepack": {
     "friendlyName": "Waterline",
     "machineDir": "machines/",
-    "machines": []
+    "machines": [
+      "connect",
+      "query",
+      "transaction"
+    ]
   }
 }
