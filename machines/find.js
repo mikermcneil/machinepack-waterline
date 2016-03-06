@@ -96,6 +96,8 @@ module.exports = {
       return exits.error(new Error('Unrecognized model (`'+inputs.model+'`).  Please check your `api/models/` folder and check that a model with this identity exists.'));
     }
 
+    // TODO: handle `exits.invalidCriteria()`
+
     Model.find({
       select: inputs.select,
       where: inputs.where,
