@@ -25,7 +25,8 @@
     "machines": [
       "connect",
       "query",
-      "transaction"
+      "transaction",
+      "find"
     ]
   }
 }
