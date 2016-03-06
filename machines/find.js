@@ -61,6 +61,15 @@ module.exports = {
       defaultsTo: []
     },
 
+    // If `connection` is omitted, a new connection will be acquired
+    // from the manager using `getConnection()`.
+    connection: {
+      example: '==='
+    },
+    // (note that if `connection` is not provided, then both `getConnection` AND
+    // `releaseConnection()` below are required.  And if either of those functions
+    //  is not provided, then `connection` is required.)
+
     meta: {
       description: 'Additional adapter-specific metadata to pass to Waterline.',
       example: '==='
@@ -98,13 +107,27 @@ module.exports = {
 
     // TODO: handle `exits.invalidCriteria()`
 
-    Model.find({
+    // Start building query
+    var q = Model.find({
       select: inputs.select,
       where: inputs.where,
       limit: inputs.limit,
       skip: inputs.skip,
       sort: inputs.sort,
-    }).exec(function (err, records) {
+    });
+
+    // Use metadata if provided.
+    if (!util.isUndefined(inputs.meta)) {
+      q = q.meta(inputs.meta);
+    }
+
+    // Use existing connection if one was provided.
+    if (!util.isUndefined(inputs.connection)) {
+      q = q.usingConnection(inputs.connection);
+    }
+
+    // Execute query
+    q.exec(function afterwards(err, records) {
       if (err) {
         return exits.error(err);
       }
