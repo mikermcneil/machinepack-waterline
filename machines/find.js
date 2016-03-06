@@ -18,7 +18,8 @@ module.exports = {
     model: {
       friendlyName: 'Model',
       extendedDescription: 'The specified string should be the _identity_ of the model.',
-      example: 'user'
+      example: 'user',
+      required: true
     },
 
     select: {
@@ -61,14 +62,10 @@ module.exports = {
       defaultsTo: []
     },
 
-    // If `connection` is omitted, a new connection will be acquired
-    // from the manager using `getConnection()`.
+    // If `connection` is omitted, a new connection will be acquired automatically.
     connection: {
       example: '==='
     },
-    // (note that if `connection` is not provided, then both `getConnection` AND
-    // `releaseConnection()` below are required.  And if either of those functions
-    //  is not provided, then `connection` is required.)
 
     meta: {
       description: 'Additional adapter-specific metadata to pass to Waterline.',
@@ -97,7 +94,7 @@ module.exports = {
     var util = require('util');
 
     if (!util.isObject(env.sails)) {
-      return exits.error(new Error('ORM cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
+      return exits.error(new Error('`sails` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
     var Model = env.sails.models[inputs.model];

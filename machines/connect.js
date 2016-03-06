@@ -74,7 +74,9 @@ module.exports = {
 
 
   fn: function(inputs, exits) {
-    return exits.success();
+    // TODO: should maintain some degree of low-level usage here,
+    // but need to get rid of the lamda inputs.
+    return exits.error(new Error('Not implemented'));
   },
 
 
