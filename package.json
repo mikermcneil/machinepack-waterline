@@ -26,7 +26,10 @@
       "connect",
       "query",
       "transaction",
-      "find"
+      "find",
+      "add-to-collection",
+      "remove-from-collection",
+      "replace-collections"
     ]
   }
 }
