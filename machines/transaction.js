@@ -7,7 +7,7 @@ module.exports = {
   description: 'Begin a transaction, perform some logic, then either commit the transaction if everything worked, or roll it back if there were any errors.',
 
 
-  environment: ['sails'],
+  environment: ['orm'],
 
 
   inputs: {
@@ -61,11 +61,11 @@ module.exports = {
   fn: function(inputs, exits) {
     var util = require('util');
 
-    if (!util.isObject(env.sails)) {
-      return exits.error(new Error('`sails` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
+    if (!util.isObject(env.orm)) {
+      return exits.error(new Error('`orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
-    var Datastore = env.sails.hooks.orm.datastores[inputs.datastore];
+    var Datastore = env.orm.datastores[inputs.datastore];
     if (!util.isObject(Datastore)) {
       return exits.error(new Error('Unrecognized datastore (`'+inputs.datastore+'`).  Please check your `config/datastores.js` file to verify that a datastore with this identity exists.'));
     }
