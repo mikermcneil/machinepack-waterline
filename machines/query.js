@@ -9,61 +9,22 @@ module.exports = {
 
   inputs: {
 
+    datastore: {
+      description: 'The identity of the datastore to use.',
+      example: 'larrysMySQLCluster',
+      required: true
+    },
+
     statement: {
-      description: 'A radar query statement to compile and send to the database as a native query.',
+      description: 'A radar query statement to compile and send to the database.',
       example: {},
       required: true
     },
 
-    // `meta` is passed through as the `meta` argin to each of
-    // the custom driver functions below:
-    // (`getConnection()`, `sendNativeQuery()`, etc.)
-    meta: { example: '===' },
-
-    // Either the identity of the datastore to use
-    datastore: { example: 'larrysDbCluster' },
-    //-AND/OR-
-    //
-    // Any of these things:
-    // (if `datastore` is provided, these are optional. If any of
-    //  them are ALSO provided, then they are used as overrides)
-    createManager: { example: '->' },
-    getConnection: { example: '->' },
-    compileStatement: { example: '->' },
-    sendNativeQuery: { example: '->' },
-    parseNativeQueryError: { example: '->' },
-    parseNativeQueryResult: { example: '->' },
-    releaseConnection: { example: '->' },
-    destroyManager: { example: '->' },
-
-    // `manager` is optional (sometimes). When this is called from n WL core,
-    // `manager` is passed in if you provide `.usingManager(...)` when building
-    // your query as a deferred object. If `connection` was explicitly provided,
-    // then `manager` is completely ignored.
-    //
-    // If `manager` is omitted, a new manager will be created
-    // using `createManager()` and destroyed with `destroyManager()`
-    // when this operation completes (whether it is successful or not).
-    manager: { example: '===' },
-    //
-    // (note that if `connection` is provided, then `manager` and the two related
-    //  functions are completely ignored.  On the other hand, if connection is NOT
-    //  provided, then `manager`, `createManager` and/or `destroyManager` are used.
-    //
-    //  If `manager` is not provided, then both `createManager` AND
-    // `destroyManager()` below are required.  And if either of those functions
-    //  is not provided, then `manager` is required.)
-
-    // `connection` is optional-- e.g. in WL core, it is passed in if
-    // you provide `.usingConnection(...)` when building your query
-    // as a deferred object.
-    //
-    // If `connection` is omitted, a new connection will be acquired
-    // from the manager using `getConnection()`.
-    connection: { example: '===' },
-    // (note that if `connection` is not provided, then both `getConnection` AND
-    // `releaseConnection()` below are required.  And if either of those functions
-    //  is not provided, then `connection` is required.)
+    meta: {
+      description: 'Additional driver-specific metadata to pass to Waterline.',
+      example: '==='
+    }
 
   },
 
@@ -71,22 +32,61 @@ module.exports = {
   exits: {
 
     success: {
-      description: 'The query was compiled and executed successfully.',
-      outputVariableName: 'report',
-      outputDescription: 'The `result` property is the result data the database sent back.  The `meta` property is reserved for custom driver-specific extensions.',
-      example: {
-        result: '*',
-        meta: '==='
-      }
+      description: 'The radar query was compiled and executed successfully.',
+      outputVariableName: 'result',
+      outputDescription: 'A normalized version of the result data from the database.',
+      example: '==='
     },
 
   },
 
 
   fn: function(inputs, exits) {
-    // TODO: should maintain some degree of low-level usage here,
-    // but need to get rid of the lamda inputs.
-    return exits.error(new Error('Not implemented'));
+    var util = require('util');
+
+    if (!util.isObject(env.sails)) {
+      return exits.error(new Error('`sails` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
+    }
+
+    var Datastore = env.sails.hooks.orm.datastores[inputs.datastore];
+    if (!util.isObject(Datastore)) {
+      return exits.error(new Error('Unrecognized datastore (`'+inputs.datastore+'`).  Please check your `config/datastores.js` file to verify that a datastore with this identity exists.'));
+    }
+
+    // Start building the deferred object.
+    var pending = Datastore.query(inputs.statement);
+
+    // Use metadata if provided.
+    if (!util.isUndefined(inputs.meta)) {
+      pending = pending.meta(inputs.meta);
+    }
+
+    // Use existing connection if one was provided.
+    if (!util.isUndefined(inputs.connection)) {
+      pending = pending.usingConnection(inputs.connection);
+    }
+
+    // Now kick everything off.
+    // (this acquires the connection, runs the provided query,
+    //  and releases the connection when finished)
+    pending.exec(function afterwards(err, result, meta) {
+      if (err) {
+        return exits.error(err);
+      }
+      return exits.success(result);
+    });
+    //
+    // Note that, behind the scenes, Waterline is doing:
+    //
+    // Datastore.driver.compileQuery()
+    // Datastore.driver.getConnection({manager: Datastore.manager})
+    // Datastore.driver.sendNativeQuery()
+    // |
+    // |_ Datastore.driver.parseNativeQueryResult()
+    // |  Datastore.driver.releaseConnection()
+    //-or-
+    // |_ Datastore.driver.parseNativeQueryError()
+    //    Datastore.driver.releaseConnection()
   },
 
 

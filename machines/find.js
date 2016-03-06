@@ -62,8 +62,8 @@ module.exports = {
       defaultsTo: []
     },
 
-    // If `connection` is omitted, a new connection will be acquired automatically.
     connection: {
+      description: 'An existing connection to use (by default, a new connection is acquired from the datastore).',
       example: '==='
     },
 
@@ -124,12 +124,25 @@ module.exports = {
     }
 
     // Execute query
-    q.exec(function afterwards(err, records) {
+    q.exec(function afterwards(err, records, meta) {
       if (err) {
         return exits.error(err);
       }
       return exits.success(records);
     });
+    //
+    // Note that, behind the scenes, Waterline is calling out to one or more adapters,
+    // each of which is doing something like:
+    //
+    // driver.getConnection({manager: manager})
+    // driver.compileQuery()
+    // driver.sendNativeQuery()
+    // |
+    // |_ driver.parseNativeQueryResult()
+    // |  driver.releaseConnection()
+    //-or-
+    // |_ driver.parseNativeQueryError()
+    //    driver.releaseConnection()
   },
 
 

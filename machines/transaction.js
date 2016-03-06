@@ -25,8 +25,7 @@ module.exports = {
       required: true,
       contract: {
         inputs: {
-          connection: { example: '===', required: true },
-          meta: { example: '===' },
+          connection: { example: '===', required: true }
         },
         exits: {
           success: { example: '===' }
@@ -34,8 +33,13 @@ module.exports = {
       }
     },
 
+    connection: {
+      description: 'An existing connection to use (by default, a new connection is acquired from the datastore).',
+      example: '==='
+    },
+
     meta: {
-      description: 'Additional adapter-specific metadata to pass to Waterline.',
+      description: 'Additional driver-specific metadata to pass to Waterline.',
       example: '==='
     }
 
@@ -66,20 +70,25 @@ module.exports = {
       return exits.error(new Error('Unrecognized datastore (`'+inputs.datastore+'`).  Please check your `config/datastores.js` file to verify that a datastore with this identity exists.'));
     }
 
-    // Start building the transaction.
-    var pendingTransaction = env.sails.hooks.orm.transaction(inputs.datastore, function _duringTransaction(T, done) {
-      inputs.during({ connection: T.connection, meta: T.meta }).exec(done);
+    // Start building the deferred object.
+    var pending = Datastore.transaction(function _duringTransaction(connection, done) {
+      inputs.during({ connection: connection }).exec(done);
     });
 
     // Use metadata if provided.
     if (!util.isUndefined(inputs.meta)) {
-      pendingTransaction = pendingTransaction.meta(inputs.meta);
+      pending = pending.meta(inputs.meta);
+    }
+
+    // Use existing connection if one was provided.
+    if (!util.isUndefined(inputs.connection)) {
+      pending = pending.usingConnection(inputs.connection);
     }
 
     // Now kick everything off.
     // (this begins the transaction, runs the provided logic,
     //  and either commits or rolls back as is appropriate)
-    pendingTransaction.exec(function afterwards(err, result) {
+    pending.exec(function afterwards(err, result, meta) {
       if (err) {
         return exits.error(err);
       }
