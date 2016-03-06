@@ -63,7 +63,7 @@ module.exports = {
     },
 
     connection: {
-      description: 'An existing connection to use (by default, a new connection is acquired from the datastore).',
+      description: 'An existing connection to use (otherwise, by default, a new connection is acquired from the datastore).',
       example: '==='
     },
 

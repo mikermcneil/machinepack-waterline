@@ -1,10 +1,10 @@
 module.exports = {
 
 
-  friendlyName: 'Remove from collection',
+  friendlyName: 'Replace collection',
 
 
-  description: 'Remove the specified IDs from the associated collection of this record.',
+  description: 'Replace the associated collection of this record with the specified IDs.',
 
 
   environment: ['orm'],
@@ -32,8 +32,8 @@ module.exports = {
       required: true
     },
 
-    associatedIdsToRemove: {
-      description: 'The IDs to remove from this record\'s associated collection.',
+    associatedIds: {
+      description: 'The IDs to replace this record\'s associated collection with.',
       extendedDescription: 'Must be an array of numbers or strings; e.g. `[\'507f191e810c19729de860ea\']`',
       example: ['*'],
       required: true
@@ -80,7 +80,7 @@ module.exports = {
     // TODO: check to ensure `inputs.association` is a recognized association
 
     // Start building query
-    var q = Model.removeFromCollection(inputs.recordId, inputs.association, inputs.associatedIdsToRemove);
+    var q = Model.replaceCollection(inputs.recordId, inputs.association, inputs.associatedIds);
 
     // Use metadata if provided.
     if (!util.isUndefined(inputs.meta)) {

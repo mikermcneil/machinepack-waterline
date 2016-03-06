@@ -29,7 +29,7 @@
       "find",
       "add-to-collection",
       "remove-from-collection",
-      "replace-collections"
+      "replace-collection"
     ]
   }
 }
