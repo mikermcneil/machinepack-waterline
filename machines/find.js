@@ -47,7 +47,7 @@ module.exports = {
     },
 
     populate: {
-      description: 'An array of assocations to populate.',
+      description: 'A set of instructions describing if/how each record should have its associations populated.',
       example: [
         {
           association: 'friends',
