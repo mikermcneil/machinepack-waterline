@@ -12,9 +12,11 @@ module.exports = {
 
   inputs: {
 
-    // The identity of the datastore to use
-    datastore: { example: 'larrysMySQLCluster', required: true },
-
+    datastore: {
+      description: 'The identity of the datastore to use.',
+      example: 'larrysMySQLCluster',
+      required: true
+    },
 
     during: {
       description: 'A function with custom logic to run once a database connection is established and a transaction has begun.',
@@ -59,32 +61,32 @@ module.exports = {
       return exits.error(new Error('`sails` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
-    var Datastore = env.sails.datastores[inputs.datastore];
+    var Datastore = env.sails.hooks.orm.datastores[inputs.datastore];
     if (!util.isObject(Datastore)) {
       return exits.error(new Error('Unrecognized datastore (`'+inputs.datastore+'`).  Please check your `config/datastores.js` file to verify that a datastore with this identity exists.'));
     }
 
     // Start building the transaction.
-    var t = Datastore.transaction(function _duringTransaction(connection, done) {
-      inputs.during({ connection: connection }).exec(done);
+    var pendingTransaction = env.sails.hooks.orm.transaction(inputs.datastore, function _duringTransaction(T, done) {
+      inputs.during({ connection: T.connection, meta: T.meta }).exec(done);
     });
 
     // Use metadata if provided.
     if (!util.isUndefined(inputs.meta)) {
-      t = t.meta(inputs.meta);
+      pendingTransaction = pendingTransaction.meta(inputs.meta);
     }
 
     // Now kick everything off.
     // (this begins the transaction, runs the provided logic,
     //  and either commits or rolls back as is appropriate)
-    t.exec(function afterwards(err, result) {
+    pendingTransaction.exec(function afterwards(err, result) {
       if (err) {
         return exits.error(err);
       }
       return exits.success(result);
     });
     //
-    // Note that, behind the scenes, this is doing:
+    // Note that, behind the scenes, Waterline is doing:
     //
     // Datastore.driver.getConnection({manager: Datastore.manager})
     // Datastore.driver.beginTransaction()
@@ -96,7 +98,6 @@ module.exports = {
     // |_ Datastore.driver.rollbackTransaction()
     //    Datastore.driver.releaseConnection()
   },
-
 
 
 };

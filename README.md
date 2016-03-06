@@ -7,6 +7,28 @@
 ## Warning
 Not intended for direct use.  Currently, this is an interface proposal; nothing more.  See the [Waterline driver interface](https://github.com/node-machine/waterline-driver-interface) for more information.
 
+
+### Example
+
+
+```javascript
+Waterline.transaction({
+  datastore: 'ricksMySQLDb',
+  during: function (T, done) {
+    Waterline.find({
+      model: 'user',
+      connection: T.connection
+    })
+    .setEnvironment({ sails: sails })
+    .exec(done)
+  }
+}).setEnvironment({ sails: sails })
+.exec(function (err){
+  // ...
+});
+
+```
+
 <!--
 ### [Docs](http://node-machine.org/machinepack-waterline) &nbsp; [Browse other machines](http://node-machine.org/machinepacks) &nbsp;  [FAQ](http://node-machine.org/implementing/FAQ)  &nbsp;  [Newsgroup](https://groups.google.com/forum/?hl=en#!forum/node-machine)
 
