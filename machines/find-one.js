@@ -1,10 +1,10 @@
 module.exports = {
 
 
-  friendlyName: 'Find',
+  friendlyName: 'Find one',
 
 
-  description: 'Find records from this model that match the specified criteria, and optionally populate their associations.',
+  description: 'Find a record that matches the specified criteria, and optionally populate its associations.',
 
 
   cacheable: true,
@@ -30,21 +30,6 @@ module.exports = {
     where: {
       example: {},
       defaultsTo: {}
-    },
-
-    limit: {
-      example: -1,
-      defaultsTo: -1
-    },
-
-    skip: {
-      example: 0,
-      defaultsTo: 0
-    },
-
-    sort: {
-      example: ['name ASC'],
-      defaultsTo: []
     },
 
     populate: {
@@ -78,13 +63,17 @@ module.exports = {
   exits: {
 
     success: {
-      outputVariableName: 'records',
-      outputDescription: 'A list of records matching the specified criteria.',
-      example: [{}]
+      outputVariableName: 'record',
+      outputDescription: 'The first record matching the specified criteria.',
+      example: {}
     },
 
     invalidCriteria: {
-      description: 'The provided `select`, `where`, `limit`, `skip`, `sort`, and/or `populate` was invalid.'
+      description: 'The provided `select`, `where` and/or `populate` was invalid.'
+    },
+
+    notFound: {
+      description: 'No record matching the specified criteria could be found.'
     }
 
   },
@@ -105,23 +94,10 @@ module.exports = {
     // TODO: handle `exits.invalidCriteria()`
 
     // Start building query
-    var q = Model.find({
+    var q = Model.findOne({
       select: inputs.select,
-      where: inputs.where,
-      limit: inputs.limit,
-      skip: inputs.skip,
-      sort: inputs.sort,
+      where: inputs.where
     });
-
-    // Use metadata if provided.
-    if (!util.isUndefined(inputs.meta)) {
-      q = q.meta(inputs.meta);
-    }
-
-    // Use existing connection if one was provided.
-    if (!util.isUndefined(inputs.connection)) {
-      q = q.usingConnection(inputs.connection);
-    }
 
     // Add in populate instructions, if provided.
     inputs.populate.forEach(function (pInstruction){
@@ -134,28 +110,27 @@ module.exports = {
       });
     });
 
+    // Use metadata if provided.
+    if (!util.isUndefined(inputs.meta)) {
+      q = q.meta(inputs.meta);
+    }
+
+    // Use existing connection if one was provided.
+    if (!util.isUndefined(inputs.connection)) {
+      q = q.usingConnection(inputs.connection);
+    }
+
     // Execute query
-    q.exec(function afterwards(err, records, meta) {
+    q.exec(function afterwards(err, record, meta) {
       if (err) {
         return exits.error(err);
       }
-      return exits.success(records);
+      if (!record) {
+        return exits.notFound();
+      }
+      return exits.success(record);
     });
-    //
-    // Note that, behind the scenes, Waterline is calling out to one or more adapters,
-    // each of which is doing something like:
-    //
-    // driver.getConnection({manager: manager})
-    // driver.compileQuery()
-    // driver.sendNativeQuery()
-    // |
-    // |_ driver.parseNativeQueryResult()
-    // |  driver.releaseConnection()
-    //-or-
-    // |_ driver.parseNativeQueryError()
-    //    driver.releaseConnection()
-  },
-
+  }
 
 
 };
