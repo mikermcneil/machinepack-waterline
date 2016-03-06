@@ -5,19 +5,50 @@
 </h1>
 
 ## Warning
-Not intended for direct use.  Currently, this is an interface proposal; nothing more.  See the [Waterline driver interface](https://github.com/node-machine/waterline-driver-interface) for more information.
+Currently, this is an interface proposal; nothing more.  See the [Waterline driver interface](https://github.com/node-machine/waterline-driver-interface) for more information.
 
 
 ### Example
 
 
+##### Using `.find()`
+
 ```javascript
-Waterline.transaction({
+Waterline.find({
+  model: 'users',
+  where: {
+    age: { '>': 50 },
+    preferredNumRazorBlades: { '>=': 3 }
+  }
+}).setEnvironment({ sails: sails })
+.exec(function (err){
+  // ...
+});
+```
+
+
+##### Using `.query()`
+
+```javascript
+Waterline.query({
   datastore: 'ricksMySQLDb',
-  during: function (T, done) {
+  statement: {}
+}).setEnvironment({ sails: sails })
+.exec(function (err){
+  // ...
+});
+```
+
+
+##### Using `.connect()`
+
+```javascript
+Waterline.connect({
+  datastore: 'ricksMySQLDb',
+  during: function (connection, done) {
     Waterline.find({
       model: 'user',
-      connection: T.connection
+      connection: connection
     })
     .setEnvironment({ sails: sails })
     .exec(done)
@@ -26,8 +57,30 @@ Waterline.transaction({
 .exec(function (err){
   // ...
 });
-
 ```
+
+
+##### Using `.transaction()`
+
+```javascript
+Waterline.transaction({
+  datastore: 'ricksMySQLDb',
+  during: function (connection, done) {
+    Waterline.find({
+      model: 'user',
+      connection: connection
+    })
+    .setEnvironment({ sails: sails })
+    .exec(done)
+  }
+}).setEnvironment({ sails: sails })
+.exec(function (err){
+  // ...
+});
+```
+
+
+
 
 <!--
 ### [Docs](http://node-machine.org/machinepack-waterline) &nbsp; [Browse other machines](http://node-machine.org/machinepacks) &nbsp;  [FAQ](http://node-machine.org/implementing/FAQ)  &nbsp;  [Newsgroup](https://groups.google.com/forum/?hl=en#!forum/node-machine)
