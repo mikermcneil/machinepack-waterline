@@ -5,7 +5,7 @@
 </h1>
 
 ## Warning
-Currently, this is an interface proposal; nothing more.  See the [Waterline driver interface](https://github.com/node-machine/waterline-driver-interface) for more information.
+Currently, this is experimental.  See the [Waterline driver interface](https://github.com/node-machine/waterline-driver-interface) for more information.
 
 
 ### Example
