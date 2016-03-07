@@ -91,8 +91,6 @@ module.exports = {
       return exits.error(new Error('Unrecognized model (`'+inputs.model+'`).  Please check your `api/models/` folder and check that a model with this identity exists.'));
     }
 
-    // TODO: handle `exits.invalidCriteria()`
-
     // Start building query
     var q = Model.findOne({
       select: inputs.select,
@@ -123,6 +121,7 @@ module.exports = {
     // Execute query
     q.exec(function afterwards(err, record, meta) {
       if (err) {
+        // TODO: handle `exits.invalidCriteria()`
         return exits.error(err);
       }
       if (!record) {

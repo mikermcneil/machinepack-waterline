@@ -72,12 +72,18 @@ module.exports = {
       return exits.error(new Error('`orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
+    // Check to ensure `inputs.model` is a recognized model.
     var Model = env.orm.models[inputs.model];
     if (!util.isObject(Model)) {
       return exits.error(new Error('Unrecognized model (`'+inputs.model+'`).  Please check your `api/models/` folder and check that a model with this identity exists.'));
     }
-
-    // TODO: check to ensure `inputs.association` is a recognized association
+    // Check to ensure `inputs.association` is a recognized collection association
+    if (!util.isObject(Model.attributes[inputs.association])) {
+      return exits.error(new Error('Unrecognized association (`'+inputs.association+'`).  Please check that a "collection" association named `'+inputs.association+'` is defined as an attribute of this model (`'+inputs.model+'`).'));
+    }
+    else if (!Model.attributes[inputs.association].collection) {
+      return exits.error(new Error('Invalid association (`'+inputs.association+'`).  This method is only compatible with "collection" associations.'));
+    }
 
     // Start building query
     var q = Model.removeFromCollection(inputs.recordId, inputs.association, inputs.associatedIdsToRemove);
