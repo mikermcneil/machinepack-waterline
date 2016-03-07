@@ -7,7 +7,7 @@ module.exports = {
   description: 'Lease a database connection, perform some logic, then release it back from whence it came.',
 
 
-  environment: ['orm'],
+  habitat: 'sails',
 
 
   inputs: {
@@ -56,11 +56,11 @@ module.exports = {
   fn: function(inputs, exits) {
     var util = require('util');
 
-    if (!util.isObject(env.orm)) {
-      return exits.error(new Error('`orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
+    if (!util.isObject(env.sails.hooks.orm)) {
+      return exits.error(new Error('`sails.hooks.orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
-    var Datastore = env.orm.datastores[inputs.datastore];
+    var Datastore = env.sails.hooks.orm.datastores[inputs.datastore];
     if (!util.isObject(Datastore)) {
       return exits.error(new Error('Unrecognized datastore (`'+inputs.datastore+'`).  Please check your `config/datastores.js` file to verify that a datastore with this identity exists.'));
     }

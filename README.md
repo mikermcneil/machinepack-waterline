@@ -20,7 +20,7 @@ Waterline.find({
     age: { '>': 50 },
     preferredNumRazorBlades: { '>=': 3 }
   }
-}).setEnvironment({ orm: sails.hooks.orm })
+}).setEnvironment({ sails: sails })
 .exec(function (err){
   // ...
 });
@@ -33,7 +33,7 @@ Waterline.find({
 Waterline.query({
   datastore: 'ricksMySQLDb',
   statement: {}
-}).setEnvironment({ orm: sails.hooks.orm })
+}).setEnvironment({ sails: sails })
 .exec(function (err){
   // ...
 });
@@ -50,10 +50,10 @@ Waterline.connect({
       model: 'user',
       connection: connection
     })
-    .setEnvironment({ orm: sails.hooks.orm })
+    .setEnvironment({ sails: sails })
     .exec(done)
   }
-}).setEnvironment({ orm: sails.hooks.orm })
+}).setEnvironment({ sails: sails })
 .exec(function (err){
   // ...
 });
@@ -70,10 +70,10 @@ Waterline.transaction({
       model: 'user',
       connection: connection
     })
-    .setEnvironment({ orm: sails.hooks.orm })
+    .setEnvironment({ sails: sails })
     .exec(done)
   }
-}).setEnvironment({ orm: sails.hooks.orm })
+}).setEnvironment({ sails: sails })
 .exec(function (err){
   // ...
 });

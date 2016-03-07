@@ -10,7 +10,7 @@ module.exports = {
   cacheable: true,
 
 
-  environment: ['orm'],
+  habitat: 'sails',
 
 
   inputs: {
@@ -82,11 +82,11 @@ module.exports = {
   fn: function(inputs, exits, env) {
     var util = require('util');
 
-    if (!util.isObject(env.orm)) {
-      return exits.error(new Error('`orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
+    if (!util.isObject(env.sails.hooks.orm)) {
+      return exits.error(new Error('`sails.hooks.orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
-    var Model = env.orm.models[inputs.model];
+    var Model = env.sails.hooks.orm.models[inputs.model];
     if (!util.isObject(Model)) {
       return exits.error(new Error('Unrecognized model (`'+inputs.model+'`).  Please check your `api/models/` folder and check that a model with this identity exists.'));
     }
