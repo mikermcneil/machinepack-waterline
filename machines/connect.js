@@ -33,10 +33,7 @@ module.exports = {
       }
     },
 
-    meta: {
-      description: 'Additional driver-specific metadata to pass to Waterline.',
-      example: '==='
-    }
+    meta: require('../constants/meta.input')
 
   },
 
