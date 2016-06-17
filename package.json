@@ -37,7 +37,8 @@
       "destroy",
       "update",
       "count",
-      "sum"
+      "sum",
+      "avg"
     ]
   }
 }
