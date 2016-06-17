@@ -38,7 +38,7 @@ module.exports = {
     },
 
     invalidCriteria: {
-      description: 'The provided `select`, `where` and/or `populate` was invalid.'
+      description: 'The provided `where` was invalid.'
     }
 
   },
