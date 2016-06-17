@@ -35,7 +35,8 @@
       "find-one",
       "create",
       "destroy",
-      "update"
+      "update",
+      "count"
     ]
   }
 }
