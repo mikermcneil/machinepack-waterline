@@ -15,12 +15,7 @@ module.exports = {
 
   inputs: {
 
-    model: {
-      friendlyName: 'Model',
-      extendedDescription: 'The specified string should be the _identity_ of the model.',
-      example: 'user',
-      required: true
-    },
+    model: require('../constants/model.input'),
 
     select: {
       example: ['foo'],
