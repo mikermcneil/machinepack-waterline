@@ -56,7 +56,7 @@ module.exports = {
     if (!_isObject(Model)) {
       return exits.error(new Error('Unrecognized model (`'+inputs.model+'`).  Please check your `api/models/` folder and check that a model with this identity exists.'));
     }
-    console.log(inputs.attributes);
+
     // Start building query
     var q = Model.create(inputs.attributes);
 
