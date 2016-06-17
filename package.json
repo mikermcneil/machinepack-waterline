@@ -34,7 +34,8 @@
       "replace-collection",
       "find-one",
       "create",
-      "destroy"
+      "destroy",
+      "update"
     ]
   }
 }
