@@ -40,11 +40,25 @@ module.exports = {
   exits: {
 
     success: {
-      description: 'The radar query was compiled and executed successfully.',
-      outputVariableName: 'result',
+      description: 'The Radar statement was compiled and the resulting native query was executed successfully.',
+      moreInfoUrl: 'https://github.com/particlebanana/waterline-query-docs/blob/master/docs/results.md',
+      outputFriendlyName: 'Query result',
       outputDescription: 'A normalized version of the result data from the database.',
       example: '==='
     },
+    
+    queryFailed: {
+      description: 'The database returned an error when attempting to execute the native query compiled from the specified Radar statement.',
+      extendedDescription:
+      'The resulting footprint conforms to one of a handful of standardized footprint types expected by the Waterline driver interface.\n'+
+      'If the error cannot be normalized into any other more specific footprint, then the catchall footprint will be returned.\n'+
+      'The footprint (`footprint`) will be coerced to a JSON-serializable dictionary if it isn\'t one already (see [rttc.dehydrate()](https://github.com/node-machine/rttc#dehydratevalue-allownullfalse-dontstringifyfunctionsfalse)).\n'+
+      'That means any Error instances therein will be converted to stacktrace strings.',
+      moreInfoUrl: 'https://github.com/particlebanana/waterline-query-docs/blob/master/docs/errors.md',
+      outputFriendlyName: 'Footprint',
+      outputDescription: 'A normalized "footprint" dictionary representing the error from the database.',
+      example: {}
+    }
 
   },
 
@@ -79,7 +93,11 @@ module.exports = {
     //  and releases the connection when finished)
     pending.exec(function afterwards(err, result, meta) {
       if (err) {
-        return exits.error(err);
+        // Note that we use `exits()` here instead of `exits.error()`.
+        // This allows the `queryFailed` exit to be traversed automatically if the `err` has `exit: "queryFailed"`.
+        // (In this case, `err.output` will be used as the actual output.  All of this behavior is built-in to the
+        //  machine runner.)
+        return exits(err);
       }
       return exits.success(result);
     });
