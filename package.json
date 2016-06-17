@@ -30,7 +30,8 @@
       "add-to-collection",
       "remove-from-collection",
       "replace-collection",
-      "find-one"
+      "find-one",
+      "create"
     ]
   }
 }
