@@ -44,14 +44,15 @@ module.exports = {
 
 
   fn: function(inputs, exits, env) {
-    var util = require('util');
+    var _isObject = require('lodash.isobject');
+    var _isUndefined = require('lodash.isundefined');
 
-    if (!util.isObject(env.sails.hooks.orm)) {
+    if (!_isObject(env.sails.hooks.orm)) {
       return exits.error(new Error('`sails.hooks.orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
     var Model = env.sails.hooks.orm.models[inputs.model];
-    if (!util.isObject(Model)) {
+    if (!_isObject(Model)) {
       return exits.error(new Error('Unrecognized model (`'+inputs.model+'`).  Please check your `api/models/` folder and check that a model with this identity exists.'));
     }
     console.log(inputs.attributes);
@@ -59,12 +60,12 @@ module.exports = {
     var q = Model.create(inputs.attributes);
 
     // Use metadata if provided.
-    if (!util.isUndefined(inputs.meta)) {
+    if (!_isUndefined(inputs.meta)) {
       q = q.meta(inputs.meta);
     }
 
     // Use existing connection if one was provided.
-    if (!util.isUndefined(inputs.connection)) {
+    if (!_isUndefined(inputs.connection)) {
       q = q.usingConnection(inputs.connection);
     }
 
@@ -74,7 +75,7 @@ module.exports = {
         // TODO: handle `exits.invalidAttributes()`
         return exits.error(err);
       }
-      var pk = util.isObject(recordOrPk) ? recordOrPk[Model.primaryKey] : recordOrPk;
+      var pk = _isObject(recordOrPk) ? recordOrPk[Model.primaryKey] : recordOrPk;
       return exits.success({
         inserted: pk
       });

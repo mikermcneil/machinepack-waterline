@@ -54,14 +54,15 @@ module.exports = {
 
 
   fn: function(inputs, exits) {
-    var util = require('util');
+    var _isObject = require('lodash.isobject');
+    var _isUndefined = require('lodash.isundefined');
 
-    if (!util.isObject(env.sails.hooks.orm)) {
+    if (!_isObject(env.sails.hooks.orm)) {
       return exits.error(new Error('`sails.hooks.orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
     var Datastore = env.sails.hooks.orm.datastores[inputs.datastore];
-    if (!util.isObject(Datastore)) {
+    if (!_isObject(Datastore)) {
       return exits.error(new Error('Unrecognized datastore (`'+inputs.datastore+'`).  Please check your `config/datastores.js` file to verify that a datastore with this identity exists.'));
     }
 
@@ -71,7 +72,7 @@ module.exports = {
     });
 
     // Use metadata if provided.
-    if (!util.isUndefined(inputs.meta)) {
+    if (!_isUndefined(inputs.meta)) {
       pending = pending.meta(inputs.meta);
     }
 

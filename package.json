@@ -14,6 +14,8 @@
   "author": "Mike McNeil",
   "license": "MIT",
   "dependencies": {
+    "lodash.isobject": "3.0.2",
+    "lodash.isundefined": "3.0.1",
     "machine": "12.1.0"
   },
   "devDependencies": {
