@@ -36,7 +36,8 @@
       "create",
       "destroy",
       "update",
-      "count"
+      "count",
+      "sum"
     ]
   }
 }
