@@ -34,6 +34,7 @@ module.exports = {
   exits: {
 
     success: {
+      description: 'Done.',
       example: {
         inserted: '*'
       }
