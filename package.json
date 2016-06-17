@@ -33,7 +33,8 @@
       "remove-from-collection",
       "replace-collection",
       "find-one",
-      "create"
+      "create",
+      "destroy"
     ]
   }
 }
