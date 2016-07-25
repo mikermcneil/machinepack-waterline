@@ -7,7 +7,7 @@ module.exports = {
   description: 'Find a record that matches the specified criteria, and optionally populate its associations.',
 
 
-  cacheable: true,
+  sideEffects: 'cacheable',
 
 
   habitat: 'sails',
@@ -53,9 +53,9 @@ module.exports = {
   exits: {
 
     success: {
-      outputVariableName: 'record',
+      outputFriendlyName: 'Found record',
       outputDescription: 'The first record matching the specified criteria.',
-      example: {}
+      outputExample: {}
     },
 
     invalidCriteria: {

@@ -38,7 +38,7 @@ module.exports = {
       moreInfoUrl: 'https://github.com/particlebanana/waterline-query-docs/blob/master/docs/results.md',
       outputFriendlyName: 'Query result',
       outputDescription: 'A normalized version of the result data from the database.',
-      example: '==='
+      outputExample: '==='
     },
 
     queryFailed: {
@@ -51,7 +51,7 @@ module.exports = {
       moreInfoUrl: 'https://github.com/particlebanana/waterline-query-docs/blob/master/docs/errors.md',
       outputFriendlyName: 'Footprint',
       outputDescription: 'A normalized "footprint" dictionary representing the error from the database.',
-      example: {}
+      outputExample: {}
     }
 
   },

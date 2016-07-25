@@ -4,23 +4,18 @@ module.exports = {
   friendlyName: 'Create',
 
 
-  description: 'Create a new record for this model with the specified attributes',
+  description: 'Create a new record for this model with the specified attributes.',
 
-
-  cacheable: false,
-
-
-  sync: false,
 
   habitat: 'sails',
+
 
   inputs: {
 
     model: require('../constants/model.input'),
 
     attributes: {
-      friendlyName: 'Attributes',
-      description: 'The attributes that the new record should have',
+      description: 'The attributes that the new record should have.',
       example: '*'
     },
 
@@ -34,8 +29,9 @@ module.exports = {
   exits: {
 
     success: {
-      description: 'Done.',
-      example: {
+      outputFriendlyName: 'Created record',
+      outputDescription: 'The newly-created record.',
+      outputExample: {
         inserted: '*'
       }
     },

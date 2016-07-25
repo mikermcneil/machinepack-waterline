@@ -7,7 +7,7 @@ module.exports = {
   description: 'Find records from this model that match the specified criteria, and update them with the specified attributes.',
 
 
-  cacheable: true,
+  sideEffects: 'cacheable',
 
 
   habitat: 'sails',
@@ -28,8 +28,7 @@ module.exports = {
     },
 
     attributes: {
-      friendlyName: 'Attributes',
-      description: 'The attributes that the new record should have',
+      description: 'The attributes that the new record should have.',
       example: '*'
     },
 
@@ -43,8 +42,9 @@ module.exports = {
   exits: {
 
     success: {
-      description: 'Done.',
-      example: {
+      outputFriendlyName: 'Number of updated records',
+      outputDescription: 'The number of records that were updated.',
+      outputExample: {
         numRecordsUpdated: 123
       }
     },

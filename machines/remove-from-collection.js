@@ -43,10 +43,6 @@ module.exports = {
 
   exits: {
 
-    success: {
-      description: 'Done.'
-    },
-
     recordNotFound: {
       description: 'The primary record (i.e. with the specified `recordId`) could not be found.'
     }

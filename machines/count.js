@@ -7,7 +7,7 @@ module.exports = {
   description: 'Return the number of records matching the specified criteria.',
 
 
-  cacheable: true,
+  sideEffects: 'cacheable',
 
 
   habitat: 'sails',
@@ -32,9 +32,9 @@ module.exports = {
   exits: {
 
     success: {
-      outputVariableName: 'count',
+      outputFriendlyName: 'Count',
       outputDescription: 'The number of records matching the criteria.',
-      example: 123
+      outputExample: 123
     },
 
     invalidCriteria: {

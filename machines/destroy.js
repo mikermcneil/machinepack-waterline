@@ -7,7 +7,7 @@ module.exports = {
   description: 'Delete records from this model that match the specified criteria.',
 
 
-  cacheable: true,
+  sideEffects: 'cacheable',
 
 
   habitat: 'sails',
@@ -32,8 +32,9 @@ module.exports = {
   exits: {
 
     success: {
-      description: 'Done.',
-      example: {
+      outputFriendlyName: 'Number of deleted records',
+      outputDescription: 'The number of records that were deleted.',
+      outputExample: {
         numRecordsDeleted: 123
       }
     },

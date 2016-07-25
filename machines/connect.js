@@ -25,10 +25,14 @@ module.exports = {
       required: true,
       contract: {
         inputs: {
-          connection: { example: '===', required: true }
+          connection: { example: '===' }
         },
         exits: {
-          success: { example: '===' }
+          success: {
+            outputFriendlyName: 'Result',
+            outputDescription: 'The data (if any) returned from the connection callback.',
+            outputExample: '==='
+          }
         }
       }
     },
@@ -41,10 +45,10 @@ module.exports = {
   exits: {
 
     success: {
-      description: 'The connection was acquired successfully, the specified logic ran without incident, and the connection was released back from whence it came.',
-      outputVariableName: 'result',
-      outputDescription: 'The result data sent back by the provided logic (`during`).',
-      example: '==='
+      description: 'The connection was acquired successfully, the specified logic ran without incident, and the connection was released.',
+      outputFriendlyName: 'Result',
+      outputDescription: 'The result data (if any) sent back by the provided logic (`during`).',
+      outputExample: '==='
     },
 
   },

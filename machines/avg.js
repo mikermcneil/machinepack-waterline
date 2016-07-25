@@ -7,7 +7,7 @@ module.exports = {
   description: 'Return the average of the values of a selected attribute for records matching the specified criteria.',
 
 
-  cacheable: true,
+  sideEffects: 'cacheable',
 
 
   habitat: 'sails',
@@ -37,9 +37,9 @@ module.exports = {
   exits: {
 
     success: {
-      outputVariableName: 'avg',
+      outputFriendlyName: 'Average',
       outputDescription: 'The average of the values of the selected attribute for the records matching the specified criteria.',
-      example: 123
+      outputExample: 123
     },
 
     invalidCriteria: {
@@ -47,7 +47,7 @@ module.exports = {
     },
 
     invalidAttribute: {
-      description: 'The provided attribute was invalid'
+      description: 'The provided attribute was invalid.'
     }
 
   },
