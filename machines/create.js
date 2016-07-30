@@ -30,7 +30,7 @@ module.exports = {
 
     success: {
       outputFriendlyName: 'Created record',
-      outputDescription: 'The newly-created record.',
+      outputDescription: 'The ID (primary key) of the newly-created record.',
       outputExample: {
         inserted: '*'
       }
