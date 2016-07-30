@@ -16,7 +16,7 @@ module.exports = {
 
     attributes: {
       description: 'The attributes that the new record should have.',
-      example: '*'
+      example: {}
     },
 
     connection: require('../constants/connection.input'),
