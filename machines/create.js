@@ -29,11 +29,9 @@ module.exports = {
   exits: {
 
     success: {
-      outputFriendlyName: 'Created record',
+      outputFriendlyName: 'Insert ID',
       outputDescription: 'The ID (primary key) of the newly-created record.',
-      outputExample: {
-        inserted: '*'
-      }
+      outputExample: '*'
     },
 
     invalidAttributes: require('../constants/invalidAttributes.exit')
