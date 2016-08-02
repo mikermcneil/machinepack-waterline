@@ -16,7 +16,7 @@ module.exports = {
 
     attributes: {
       description: 'The attributes that the new record should have.',
-      example: '*'
+      example: {}
     },
 
     connection: require('../constants/connection.input'),
@@ -29,11 +29,9 @@ module.exports = {
   exits: {
 
     success: {
-      outputFriendlyName: 'Created record',
-      outputDescription: 'The newly-created record.',
-      outputExample: {
-        inserted: '*'
-      }
+      outputFriendlyName: 'Insert ID',
+      outputDescription: 'The ID (primary key) of the newly-created record.',
+      outputExample: '*'
     },
 
     invalidAttributes: require('../constants/invalidAttributes.exit')
