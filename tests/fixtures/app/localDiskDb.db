@@ -1,0 +1,123 @@
+{
+  "data": {
+    "pet": [
+      {
+        "name": "farley",
+        "breed": "golden retriever",
+        "createdAt": "2016-08-03T02:45:01.060Z",
+        "updatedAt": "2016-08-03T02:45:29.243Z",
+        "id": 1,
+        "owner": 1
+      },
+      {
+        "name": "spot",
+        "breed": "siamese",
+        "createdAt": "2016-08-03T02:45:01.061Z",
+        "updatedAt": "2016-08-03T02:45:41.066Z",
+        "id": 2,
+        "owner": 1
+      },
+      {
+        "name": "rex",
+        "breed": "boxer",
+        "createdAt": "2016-08-03T02:45:01.062Z",
+        "updatedAt": "2016-08-03T02:45:52.603Z",
+        "id": 3,
+        "owner": 2
+      },
+      {
+        "name": "roscoe",
+        "breed": "himalayan",
+        "createdAt": "2016-08-03T02:45:01.062Z",
+        "updatedAt": "2016-08-03T02:45:01.062Z",
+        "id": 4
+      }
+    ],
+    "user": [
+      {
+        "name": "bob",
+        "age": 40,
+        "createdAt": "2016-08-03T02:43:45.763Z",
+        "updatedAt": "2016-08-03T02:43:45.763Z",
+        "id": 1
+      },
+      {
+        "name": "sally",
+        "age": 29,
+        "createdAt": "2016-08-03T02:43:45.764Z",
+        "updatedAt": "2016-08-03T02:43:45.764Z",
+        "id": 2
+      },
+      {
+        "name": "joe",
+        "age": 12,
+        "createdAt": "2016-08-03T02:43:45.765Z",
+        "updatedAt": "2016-08-03T02:43:45.765Z",
+        "id": 3
+      },
+      {
+        "name": "anne",
+        "age": 32,
+        "createdAt": "2016-08-03T02:43:45.766Z",
+        "updatedAt": "2016-08-03T02:43:45.766Z",
+        "id": 4
+      }
+    ]
+  },
+  "schema": {
+    "pet": {
+      "name": {
+        "type": "string"
+      },
+      "breed": {
+        "type": "string"
+      },
+      "owner": {
+        "type": "integer",
+        "model": "user",
+        "foreignKey": true,
+        "alias": "owner"
+      },
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    },
+    "user": {
+      "name": {
+        "type": "string"
+      },
+      "age": {
+        "type": "integer"
+      },
+      "id": {
+        "type": "integer",
+        "autoIncrement": true,
+        "primaryKey": true,
+        "unique": true
+      },
+      "createdAt": {
+        "type": "datetime"
+      },
+      "updatedAt": {
+        "type": "datetime"
+      }
+    }
+  },
+  "counters": {
+    "pet": {
+      "id": 4
+    },
+    "user": {
+      "id": 4
+    }
+  }
+}

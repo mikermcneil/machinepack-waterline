@@ -19,6 +19,7 @@
     "machine": "^12.3.0"
   },
   "devDependencies": {
+    "sails": "^0.12.4",
     "test-machinepack-mocha": "^2.0.0"
   },
   "machinepack": {
