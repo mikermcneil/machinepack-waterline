@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A database-agnostic connectivity library for sending queries, managing dynamic db connections, committing/rolling back transactions, and more.",
   "scripts": {
-    "test": "node ./node_modules/test-machinepack-mocha/bin/testmachinepack-mocha.js"
+    "test": "mocha tests/** -R spec"
   },
   "keywords": [
     "Waterline",
@@ -19,6 +19,9 @@
     "machine": "^12.3.0"
   },
   "devDependencies": {
+    "fs-extra": "^0.30.0",
+    "lodash": "^3.10.1",
+    "mocha": "^3.0.0",
     "sails": "^0.12.4",
     "test-machinepack-mocha": "^2.0.0"
   },
