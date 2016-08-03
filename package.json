@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A database-agnostic connectivity library for sending queries, managing dynamic db connections, committing/rolling back transactions, and more.",
   "scripts": {
-    "test": "mocha tests/** -R spec"
+    "test": "mocha tests/** -t 10000 -R spec"
   },
   "keywords": [
     "Waterline",
