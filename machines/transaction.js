@@ -37,9 +37,9 @@ module.exports = {
       }
     },
 
-    connection: require('../constants/connection.input'),
+    // connection: require('../constants/connection.input'),
 
-    meta: require('../constants/meta.input')
+    // meta: require('../constants/meta.input')
 
   },
 
@@ -85,12 +85,14 @@ module.exports = {
     }
 
     // Now kick everything off.
-    // (this begins the transaction, runs the provided logic,
-    //  and either commits or rolls back as is appropriate)
+    // This begins the transaction, runs the provided logic,
+    // and either commits or rolls back as is appropriate.
     pending.exec(function afterwards(err, result, meta) {
+      // Forward any errors to the `error` exit.
       if (err) {
         return exits.error(err);
       }
+      // Otherwise return the result of the `during` logic through the `success` exit.
       return exits.success(result);
     });
     //
