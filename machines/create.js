@@ -39,19 +39,25 @@ module.exports = {
 
 
   fn: function(inputs, exits, env) {
+
+    // Import `isObject` and `isUndefined` Lodash functions.
     var _isObject = require('lodash.isobject');
     var _isUndefined = require('lodash.isundefined');
 
+    // If we can't access the ORM, leave through the `error` exit.
     if (!_isObject(env.sails.hooks.orm)) {
       return exits.error(new Error('`sails.hooks.orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
+    // Find the model class indicated by the `inputs.model` value.
     var Model = env.sails.hooks.orm.models[inputs.model];
+
+    // If it's not a recognized model, trigger the `error` exit.
     if (!_isObject(Model)) {
       return exits.error(new Error('Unrecognized model (`'+inputs.model+'`).  Please check your `api/models/` folder and check that a model with this identity exists.'));
     }
 
-    // Start building query
+    // Start building the query.
     var q = Model.create(inputs.attributes);
 
     // Use metadata if provided.
@@ -64,16 +70,20 @@ module.exports = {
       q = q.usingConnection(inputs.connection);
     }
 
-    // Execute query
+    // Execute the query.
     q.exec(function afterwards(err, recordOrPk, meta) {
+      // Forward any errors to the `error` exit.
       if (err) {
         // TODO: handle `exits.invalidAttributes()`
         return exits.error(err);
       }
+
+      // Get the primary key of the newly-inserted record.
       var pk = _isObject(recordOrPk) ? recordOrPk[Model.primaryKey] : recordOrPk;
-      return exits.success({
-        inserted: pk
-      });
+
+      // Return the primary key through the `success` exit.
+      return exits.success(pk);
+
     });
 
     //
