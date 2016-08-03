@@ -44,9 +44,7 @@ module.exports = {
     success: {
       outputFriendlyName: 'Number of updated records',
       outputDescription: 'The number of records that were updated.',
-      outputExample: {
-        numRecordsUpdated: 123
-      }
+      outputExample: 123
     },
 
     invalidAttributes: require('../constants/invalidAttributes.exit'),
@@ -59,19 +57,25 @@ module.exports = {
 
 
   fn: function(inputs, exits, env) {
+
+    // Import `isObject` and `isUndefined` Lodash functions.
     var _isObject = require('lodash.isobject');
     var _isUndefined = require('lodash.isundefined');
 
+    // If we can't access the ORM, leave through the `error` exit.
     if (!_isObject(env.sails.hooks.orm)) {
       return exits.error(new Error('`sails.hooks.orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
+    // Find the model class indicated by the `inputs.model` value.
     var Model = env.sails.hooks.orm.models[inputs.model];
+
+    // If it's not a recognized model, trigger the `error` exit.
     if (!_isObject(Model)) {
       return exits.error(new Error('Unrecognized model (`'+inputs.model+'`).  Please check your `api/models/` folder and check that a model with this identity exists.'));
     }
 
-    // Start building query
+    // Start building the query.
     var q = Model.update(inputs.where, inputs.attributes);
 
     // Use metadata if provided.
@@ -84,16 +88,18 @@ module.exports = {
       q = q.usingConnection(inputs.connection);
     }
 
-    // Execute query
+    // Execute the query.
     q.exec(function afterwards(err, recordsOrNumRecords, meta) {
+      // Forward any errors to the `error` exit.
       if (err) {
         // TODO: handle `exits.invalidCriteria()`
         // TODO: handle `exits.invalidAttributes()`
         return exits.error(err);
       }
-      return exits.success({
-        numRecordsUpdated: _isObject(recordsOrNumRecords) ? recordsOrNumRecords.length : recordsOrNumRecords
-      });
+      // Determine the number of records that were updated (if any).
+      var numRecordsUpdated = _isObject(recordsOrNumRecords) ? recordsOrNumRecords.length : recordsOrNumRecords;
+      // Return the number of updated records through the `success` exit.
+      return exits.success(numRecordsUpdated);
     });
     //
     // Note that, behind the scenes, Waterline is calling out to one or more adapters,
