@@ -31,6 +31,27 @@
         "createdAt": "2016-08-03T02:45:01.062Z",
         "updatedAt": "2016-08-03T02:45:01.062Z",
         "id": 4
+      },
+      {
+        "name": "argus",
+        "breed": "dalmation",
+        "createdAt": "2016-08-03T03:29:42.432Z",
+        "updatedAt": "2016-08-03T03:29:42.432Z",
+        "id": 5
+      },
+      {
+        "name": "princess",
+        "breed": "tabby",
+        "createdAt": "2016-08-03T03:29:42.433Z",
+        "updatedAt": "2016-08-03T03:29:42.433Z",
+        "id": 6
+      },
+      {
+        "name": "gordon",
+        "breed": "gecko",
+        "createdAt": "2016-08-03T03:29:42.434Z",
+        "updatedAt": "2016-08-03T03:29:42.434Z",
+        "id": 7
       }
     ],
     "user": [
@@ -114,7 +135,7 @@
   },
   "counters": {
     "pet": {
-      "id": 4
+      "id": 7
     },
     "user": {
       "id": 4
