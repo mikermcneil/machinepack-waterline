@@ -22,9 +22,9 @@ module.exports = {
       defaultsTo: {}
     },
 
-    connection: require('../constants/connection.input'),
+    // connection: require('../constants/connection.input'),
 
-    meta: require('../constants/meta.input')
+    // meta: require('../constants/meta.input')
 
   },
 
