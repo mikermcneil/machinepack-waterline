@@ -17,6 +17,14 @@ module.exports = {
 
     model: require('../constants/model.input'),
 
+    schema: {
+      friendlyName: 'Model schema',
+      description: 'An example of the model schema (i.e. its attributes).',
+      example: {},
+      defaultsTo: {},
+      isExemplar: true
+    },
+
     select: {
       example: ['foo'],
       defaultsTo: ['*']
@@ -55,7 +63,7 @@ module.exports = {
     success: {
       outputFriendlyName: 'Found record',
       outputDescription: 'The first record matching the specified criteria.',
-      outputExample: {}
+      like: 'schema'
     },
 
     invalidCriteria: {

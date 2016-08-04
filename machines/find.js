@@ -17,6 +17,14 @@ module.exports = {
 
     model: require('../constants/model.input'),
 
+    schema: {
+      friendlyName: 'Model schema',
+      description: 'An example of the model schema (i.e. its attributes).',
+      example: {},
+      defaultsTo: {},
+      isExemplar: true
+    },
+
     select: {
       example: ['foo'],
       defaultsTo: ['*']
@@ -70,7 +78,9 @@ module.exports = {
     success: {
       outputFriendlyName: 'Found records',
       outputDescription: 'A list of records matching the specified criteria.',
-      outputExample: [{}]
+      getExample: function (inputs, env) {
+        return [env.rttc.coerceExemplar(inputs.schema, false, false, true)];
+      }
     },
 
     invalidCriteria: {
