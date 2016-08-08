@@ -47,11 +47,11 @@ module.exports = {
       outputExample: 123
     },
 
-    invalidAttributes: require('../constants/invalidAttributes.exit'),
+    // invalidAttributes: require('../constants/invalidAttributes.exit'),
 
-    invalidCriteria: {
-      description: 'The provided `where` was invalid.'
-    }
+    // invalidCriteria: {
+    //   description: 'The provided `where` was invalid.'
+    // }
 
   },
 

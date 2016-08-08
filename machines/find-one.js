@@ -66,9 +66,9 @@ module.exports = {
       like: 'schema'
     },
 
-    invalidCriteria: {
-      description: 'The provided `select`, `where` and/or `populate` was invalid.'
-    },
+    // invalidCriteria: {
+    //   description: 'The provided `select`, `where` and/or `populate` was invalid.'
+    // },
 
     notFound: {
       description: 'No record matching the specified criteria could be found.'

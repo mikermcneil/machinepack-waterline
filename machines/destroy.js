@@ -37,9 +37,9 @@ module.exports = {
       outputExample: 123
     },
 
-    invalidCriteria: {
-      description: 'The provided `where` was invalid.'
-    }
+    // invalidCriteria: {
+    //   description: 'The provided `where` was invalid.'
+    // }
 
   },
 

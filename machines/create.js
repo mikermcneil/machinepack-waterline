@@ -34,7 +34,7 @@ module.exports = {
       outputExample: '*'
     },
 
-    invalidAttributes: require('../constants/invalidAttributes.exit')
+    // invalidAttributes: require('../constants/invalidAttributes.exit')
   },
 
 
