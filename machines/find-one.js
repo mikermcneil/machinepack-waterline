@@ -83,6 +83,11 @@ module.exports = {
     var _isObject = require('lodash.isobject');
     var _isUndefined = require('lodash.isundefined');
 
+    // If we don't have a Sails app in our environment, bail early through the `error` exit.
+    if (!_isObject(env.sails)) {
+      return exits.error(new Error('A valid Sails app must be provided through `.setEnv()` in order to use this machine.'));
+    }
+
     // If we can't access the ORM, leave through the `error` exit.
     if (!_isObject(env.sails.hooks.orm)) {
       return exits.error(new Error('`sails.hooks.orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
