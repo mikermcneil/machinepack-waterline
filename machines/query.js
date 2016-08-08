@@ -64,7 +64,7 @@ module.exports = {
     var _isUndefined = require('lodash.isundefined');
 
     // If we don't have a Sails app in our environment, bail early through the `error` exit.
-    if (!_isObject(env.sails)) {
+    if (!_isObject(env.sails) || env.sails.constructor.name !== 'Sails') {
       return exits.error(new Error('A valid Sails app must be provided through `.setEnv()` in order to use this machine.'));
     }
 
