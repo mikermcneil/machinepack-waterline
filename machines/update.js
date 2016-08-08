@@ -7,7 +7,7 @@ module.exports = {
   description: 'Find records from this model that match the specified criteria, and update them with the specified attributes.',
 
 
-  sideEffects: 'cacheable',
+  sideEffects: 'idempotent',
 
 
   habitat: 'sails',

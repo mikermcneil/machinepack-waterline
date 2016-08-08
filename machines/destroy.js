@@ -7,7 +7,7 @@ module.exports = {
   description: 'Delete records from this model that match the specified criteria.',
 
 
-  sideEffects: 'cacheable',
+  sideEffects: 'idempotent',
 
 
   habitat: 'sails',

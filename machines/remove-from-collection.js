@@ -10,6 +10,9 @@ module.exports = {
   habitat: 'sails',
 
 
+  sideEffects: 'idempotent',
+
+
   inputs: {
 
     model: require('../constants/model.input'),
@@ -39,6 +42,8 @@ module.exports = {
     // meta: require('../constants/meta.input')
 
   },
+
+
 
 
   exits: {
