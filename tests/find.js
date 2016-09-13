@@ -48,9 +48,6 @@ describe('machinepack-waterline: find', function() {
       .setEnvironment({sails: app})
       .exec({
         error: done,
-        notFound: function() {
-          return done(new Error('Should not have called `notFound`!'));
-        },
         success: function(users) {
           assert.equal(users.length, 2);
           var bob = _.find(users, {id: 1});
