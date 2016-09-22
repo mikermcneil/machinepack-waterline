@@ -16,7 +16,7 @@ module.exports = {
   inputs: {
 
     model: {
-      description: 'The type of the record whose collection will be modified.',
+      description: 'The type of record to find and average values for.',
       extendedDescription: 'The specified string should be the _identity_ of the model.',
       example: 'user',
       required: true

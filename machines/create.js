@@ -12,7 +12,12 @@ module.exports = {
 
   inputs: {
 
-    model: require('../constants/model.input'),
+    model: {
+      description: 'The type of record to create.',
+      extendedDescription: 'The specified string should be the _identity_ of the model.',
+      example: 'user',
+      required: true
+    },
 
     attributes: {
       description: 'The attributes that the new record should have.',

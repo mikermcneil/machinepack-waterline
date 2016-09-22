@@ -15,7 +15,12 @@ module.exports = {
 
   inputs: {
 
-    model: require('../constants/model.input'),
+    model: {
+      description: 'The type of record to find.',
+      extendedDescription: 'The specified string should be the _identity_ of the model.',
+      example: 'user',
+      required: true
+    },
 
     schema: {
       friendlyName: 'Model schema',
