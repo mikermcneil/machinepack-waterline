@@ -18,6 +18,15 @@ module.exports = {
       description: 'The attributes that the new record should have.',
       example: {}
     },
+    
+    pkSchema: {
+      friendlyName: 'Primary key schema',
+      description: 'An example primary key value to use for narrowing down whether to expect a number or a string.',
+      extendedDesription: 'If specified, this must be set to either a number, a miscellaneous string, or "*" to indicate the possibility of either.',
+      example: 23235,
+      defaultsTo: '*',
+      isExemplar: true
+    },
 
     // connection: require('../constants/connection.input'),
 
@@ -31,7 +40,7 @@ module.exports = {
     success: {
       outputFriendlyName: 'Insert ID',
       outputDescription: 'The ID (primary key) of the newly-created record.',
-      outputExample: '*'
+      like: 'pkSchema'
     },
 
     // invalidAttributes: require('../constants/invalidAttributes.exit')
@@ -40,9 +49,36 @@ module.exports = {
 
   fn: function(inputs, exits, env) {
 
-    // Import `isObject` and `isUndefined` Lodash functions.
-    var _isObject = require('lodash.isobject');
-    var _isUndefined = require('lodash.isundefined');
+    // Import lodash.
+    var _ = require('lodash');
+    
+    // Import rttc
+    var rttc = require('rttc');
+    
+    // Infer a type schema from the provided exemplar schema,
+    // then ensure it is either "*", a miscellaneous string, or
+    // a number.  Note that other special RTTC syntax is not allowed
+    // (e.g. "===" / "->").
+    var pkTypeSchema;
+    try {
+      pkTypeSchema = rttc.infer(inputs.pkSchema);
+    } catch (e) {
+      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It cannot be interpreted as an RTTC exemplar.  Details: '+e.stack); }
+    }
+    
+    if (pkTypeSchema === 'string' || pkTypeSchema === 'number' || pkTypeSchema === 'json') {
+      // OK- good to go!  Continue on below.
+    }
+    else if (pkTypeSchema === 'lamda') {
+      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It is a special symbol that indicates a "function", but a primary key should be either a string or a number.'); }
+    }
+    else if (pkTypeSchema === 'ref') {
+      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It is a special symbol that indicates a "ref" (any generic mutable reference), but a primary key should be either a string or a number.'); }
+    }
+    else {
+      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It must be either a string or a number.'); }
+    }
+    //>-
 
     // If we don't have a Sails app in our environment, bail early through the `error` exit.
     if (!_isObject(env.sails) || env.sails.constructor.name !== 'Sails') {
