@@ -14,13 +14,12 @@
   "author": "Mike McNeil",
   "license": "MIT",
   "dependencies": {
-    "lodash.isobject": "3.0.2",
-    "lodash.isundefined": "3.0.1",
-    "machine": "^13.0.0-0"
+    "lodash": "3.10.1",
+    "machine": "^13.0.0-0",
+    "rttc": "^9.8.2"
   },
   "devDependencies": {
     "fs-extra": "^0.30.0",
-    "lodash": "^3.10.1",
     "mocha": "^3.0.0",
     "sails": "^0.12.4",
     "test-machinepack-mocha": "^2.0.0"

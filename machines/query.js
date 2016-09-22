@@ -59,23 +59,22 @@ module.exports = {
 
   fn: function(inputs, exits) {
 
-    // Import `isObject` and `isUndefined` Lodash functions.
-    var _isObject = require('lodash.isobject');
-    var _isUndefined = require('lodash.isundefined');
+    // Import Lodash.
+    var _ = require('lodash');
 
     // If we don't have a Sails app in our environment, bail early through the `error` exit.
-    if (!_isObject(env.sails) || env.sails.constructor.name !== 'Sails') {
+    if (!_.isObject(env.sails) || env.sails.constructor.name !== 'Sails') {
       return exits.error(new Error('A valid Sails app must be provided through `.setEnv()` in order to use this machine.'));
     }
 
     // If we can't access the ORM, leave through the `error` exit.
-    if (!_isObject(env.sails.hooks.orm)) {
+    if (!_.isObject(env.sails.hooks.orm)) {
       return exits.error(new Error('`sails.hooks.orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
     // Attempt to load the specified datastore, or else leave through the `error` exit.
     var Datastore = env.sails.hooks.orm.datastores[inputs.datastore];
-    if (!_isObject(Datastore)) {
+    if (!_.isObject(Datastore)) {
       return exits.error(new Error('Unrecognized datastore (`'+inputs.datastore+'`).  Please check your `config/datastores.js` file to verify that a datastore with this identity exists.'));
     }
 
@@ -83,12 +82,12 @@ module.exports = {
     var pending = Datastore.query(inputs.statement);
 
     // Use metadata if provided.
-    if (!_isUndefined(inputs.meta)) {
+    if (!_.isUndefined(inputs.meta)) {
       pending = pending.meta(inputs.meta);
     }
 
     // Use existing connection if one was provided.
-    if (!_isUndefined(inputs.connection)) {
+    if (!_.isUndefined(inputs.connection)) {
       pending = pending.usingConnection(inputs.connection);
     }
 
