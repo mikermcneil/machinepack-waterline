@@ -52,10 +52,10 @@ module.exports = {
 
     // Import lodash.
     var _ = require('lodash');
-    
+
     // Import rttc
     var rttc = require('rttc');
-    
+
     // Infer a type schema from the provided exemplar schema,
     // then ensure it is either "*", a miscellaneous string, or
     // a number.  Note that other special RTTC syntax is not allowed
@@ -64,30 +64,30 @@ module.exports = {
     try {
       pkTypeSchema = rttc.infer(inputs.pkSchema);
     } catch (e) {
-      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It cannot be interpreted as an RTTC exemplar.  Details: '+e.stack); }
+      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It cannot be interpreted as an RTTC exemplar.  Details: '+e.stack);
     }
-    
+
     if (pkTypeSchema === 'string' || pkTypeSchema === 'number' || pkTypeSchema === 'json') {
       // OK- good to go!  Continue on below.
     }
     else if (pkTypeSchema === 'lamda') {
-      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It is a special symbol that indicates a "function", but a primary key should be either a string or a number.'); }
+      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It is a special symbol that indicates a "function", but a primary key should be either a string or a number.');
     }
     else if (pkTypeSchema === 'ref') {
-      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It is a special symbol that indicates a "ref" (any generic mutable reference), but a primary key should be either a string or a number.'); }
+      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It is a special symbol that indicates a "ref" (any generic mutable reference), but a primary key should be either a string or a number.');
     }
     else {
-      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It must be either a string or a number.'); }
+      throw new Error('The provided "Primary key schema" (`'+inputs.pkSchema+'`) is invalid.  It must be either a string or a number.');
     }
     //>-
 
     // If we don't have a Sails app in our environment, bail early through the `error` exit.
-    if (!_isObject(env.sails) || env.sails.constructor.name !== 'Sails') {
+    if (!_.isObject(env.sails) || env.sails.constructor.name !== 'Sails') {
       return exits.error(new Error('A valid Sails app must be provided through `.setEnv()` in order to use this machine.'));
     }
 
     // If we can't access the ORM, leave through the `error` exit.
-    if (!_isObject(env.sails.hooks.orm)) {
+    if (!_.isObject(env.sails.hooks.orm)) {
       return exits.error(new Error('`sails.hooks.orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
@@ -95,7 +95,7 @@ module.exports = {
     var Model = env.sails.hooks.orm.models[inputs.model];
 
     // If it's not a recognized model, trigger the `error` exit.
-    if (!_isObject(Model)) {
+    if (!_.isObject(Model)) {
       return exits.error(new Error('Unrecognized model (`'+inputs.model+'`).  Please check your `api/models/` folder and check that a model with this identity exists.'));
     }
 
@@ -103,12 +103,12 @@ module.exports = {
     var q = Model.create(inputs.attributes);
 
     // Use metadata if provided.
-    if (!_isUndefined(inputs.meta)) {
+    if (!_.isUndefined(inputs.meta)) {
       q = q.meta(inputs.meta);
     }
 
     // Use existing connection if one was provided.
-    if (!_isUndefined(inputs.connection)) {
+    if (!_.isUndefined(inputs.connection)) {
       q = q.usingConnection(inputs.connection);
     }
 
@@ -121,7 +121,7 @@ module.exports = {
       }
 
       // Get the primary key of the newly-inserted record.
-      var pk = _isObject(recordOrPk) ? recordOrPk[Model.primaryKey] : recordOrPk;
+      var pk = _.isObject(recordOrPk) ? recordOrPk[Model.primaryKey] : recordOrPk;
 
       // Return the primary key through the `success` exit.
       return exits.success(pk);
