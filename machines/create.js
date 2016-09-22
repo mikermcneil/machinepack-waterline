@@ -18,12 +18,12 @@ module.exports = {
       description: 'The attributes that the new record should have.',
       example: {}
     },
-    
+
     pkSchema: {
       friendlyName: 'Primary key schema',
       description: 'An example primary key value to use for narrowing down whether to expect a number or a string.',
-      extendedDesription: 'If specified, this must be set to either a number, a miscellaneous string, or "*" to indicate the possibility of either.',
-      example: 23235,
+      extendedDescription: 'If specified, this must be set to either a number, a miscellaneous string, or "*" to indicate the possibility of either.',
+      example: '*',
       defaultsTo: '*',
       isExemplar: true
     },
@@ -39,7 +39,8 @@ module.exports = {
 
     success: {
       outputFriendlyName: 'Insert ID',
-      outputDescription: 'The ID (primary key) of the newly-created record.',
+      outputDescription: 'The ID (primary key) of the newly-created record.  To set the primary key type (number or string), set the \'Primary key schema\' input.',
+
       like: 'pkSchema'
     },
 
