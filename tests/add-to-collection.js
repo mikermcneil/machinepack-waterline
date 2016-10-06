@@ -32,7 +32,7 @@ describe('machinepack-waterline: add-to-collection', function() {
         association: 'pets',
         associatedIdsToAdd: [4,5]
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function() {
@@ -64,13 +64,13 @@ describe('machinepack-waterline: add-to-collection', function() {
         association: 'pets',
         associatedIdsToAdd: [4,5]
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function() {
           return done(new Error('Should not have called `success` exit!'));
         },
-        recordNotFound: done
+        recordNotFound: function(){done();}
 
       });
 

@@ -30,7 +30,7 @@ describe('machinepack-waterline: count', function() {
       Waterline.count({
         model: 'user'
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function(count) {
@@ -50,7 +50,7 @@ describe('machinepack-waterline: count', function() {
           id: {'>': 2}
         }
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function(count) {

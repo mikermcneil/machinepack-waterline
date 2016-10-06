@@ -45,7 +45,7 @@ describe('machinepack-waterline: find', function() {
           }
         ]
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function(users) {

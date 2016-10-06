@@ -45,7 +45,7 @@ describe('machinepack-waterline: find-one', function() {
           }
         ]
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         notFound: function() {
@@ -76,13 +76,13 @@ describe('machinepack-waterline: find-one', function() {
           id: 99
         }
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function() {
           return done(new Error('Should not have called `success` exit!'));
         },
-        notFound: done
+        notFound: function(){done();}
 
       });
 

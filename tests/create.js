@@ -35,7 +35,7 @@ describe('machinepack-waterline: create', function() {
           pets: [4,5]
         }
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function(newRecordId) {

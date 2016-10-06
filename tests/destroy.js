@@ -33,7 +33,7 @@ describe('machinepack-waterline: destroy', function() {
           id: {'>': 1}
         }
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function(numDeletedRecords) {
@@ -57,7 +57,7 @@ describe('machinepack-waterline: destroy', function() {
       Waterline.destroy({
         model: 'pet'
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function(numDeletedRecords) {

@@ -36,7 +36,7 @@ describe('machinepack-waterline: update', function() {
           name: 'queen'
         }
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function(numUpdatedRecords) {

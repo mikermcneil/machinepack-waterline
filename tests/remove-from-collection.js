@@ -33,7 +33,7 @@ describe('machinepack-waterline: remove-from-collection', function() {
         association: 'pets',
         associatedIdsToRemove: [1]
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function() {
@@ -64,13 +64,13 @@ describe('machinepack-waterline: remove-from-collection', function() {
         association: 'pets',
         associatedIdsToRemove: [4,5]
       })
-      .setEnvironment({sails: app})
+      .setEnv({sails: app})
       .exec({
         error: done,
         success: function() {
           return done(new Error('Should not have called `success` exit!'));
         },
-        recordNotFound: done
+        recordNotFound: function(){done();}
 
       });
 
