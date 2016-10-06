@@ -25,7 +25,7 @@ module.exports = {
     },
 
     pkSchema: {
-      friendlyName: 'Primary key schema',
+      friendlyName: 'Example primary key',
       description: 'An example primary key value to use for narrowing down whether to expect a number or a string.',
       extendedDescription: 'If specified, this must be set to either a number, a miscellaneous string, or "*" to indicate the possibility of either.',
       example: '*',

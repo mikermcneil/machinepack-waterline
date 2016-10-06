@@ -23,8 +23,8 @@ module.exports = {
     },
 
     schema: {
-      friendlyName: 'Model schema',
-      description: 'An example of the model schema (i.e. its attributes).',
+      friendlyName: 'Example record',
+      description: 'An example of the schema (i.e. attributes) of the record that should be returned.',
       example: {},
       defaultsTo: {},
       isExemplar: true
