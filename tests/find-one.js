@@ -35,7 +35,7 @@ describe('machinepack-waterline: find-one', function() {
         populate: [
           {
             association: 'pets',
-            select: ['name'],
+            select: [],
             where: {
               breed: 'siamese'
             },
@@ -54,9 +54,9 @@ describe('machinepack-waterline: find-one', function() {
         success: function(bob) {
           assert.equal(bob.name, 'bob');
           assert.equal(bob.age, 40);
-          assert(bob.pets.length, 1);
-          assert(bob.pets[0].name, 'spot');
-          assert(typeof bob.pets[0].breed, 'undefined');
+          assert.equal(bob.pets.length, 1);
+          assert.equal(bob.pets[0].name, 'spot');
+          assert.equal(bob.pets[0].breed, 'siamese');
           return done();
         }
       });

@@ -31,8 +31,7 @@ module.exports = {
     },
 
     select: {
-      example: ['foo'],
-      defaultsTo: ['*']
+      example: ['foo']
     },
 
     where: {
@@ -99,7 +98,7 @@ module.exports = {
 
     // Temporarily throw if `select` feature is utilized.
     // This will be available in the Waterline that ships w/ Sails 1.0.
-    if (inputs.select.length > 1 || inputs.select[0] !== '*' || _.any(inputs.populate, function(p) {return p.select.length;})) {
+    if (inputs.select || _.any(inputs.populate, function(p) {return p.select.length;})) {
       throw new Error('The `select` feature is currently not supported.');
     }
 
@@ -111,21 +110,36 @@ module.exports = {
       return exits.error(new Error('Unrecognized model (`'+inputs.model+'`).  Please check your `api/models/` folder and check that a model with this identity exists.'));
     }
 
-    // Start building the query.
-    var q = Model.findOne({
-      // select: inputs.select,
+    // Start building query options.
+    var queryOptions = {
       where: inputs.where
-    });
+    };
+
+    // If we want to select only certain attributes, add that
+    // to the query options.
+    if (inputs.select) {
+      queryOptions.select = inputs.select;
+    }
+
+    // Start building the query.
+    var q = Model.findOne(queryOptions);
 
     // Add in populate instructions, if provided.
     inputs.populate.forEach(function (pInstruction){
-      q = q.populate(pInstruction.association, {
-        // select: pInstruction.select,
+      // Start building query options for the association.
+      var queryOptions = {
         where: pInstruction.where,
         limit: pInstruction.limit,
         skip: pInstruction.skip,
-        sort: pInstruction.sort,
-      });
+        sort: pInstruction.sort
+      };
+
+      // If we want to select only certain attributes, add that
+      // to the query options.
+      if (pInstruction.select.length) {
+        queryOptions.select = pInstruction.select;
+      }
+      q = q.populate(pInstruction.association, queryOptions);
     });
 
     // Use metadata if provided.

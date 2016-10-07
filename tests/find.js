@@ -35,7 +35,7 @@ describe('machinepack-waterline: find', function() {
         populate: [
           {
             association: 'pets',
-            select: ['name'],
+            select: [],
             where: {
               breed: ['golden retriever', 'boxer']
             },
@@ -61,9 +61,9 @@ describe('machinepack-waterline: find', function() {
           assert(sally);
           assert.equal(sally.name, 'sally');
           assert.equal(sally.age, 29);
-          assert(sally.pets.length, 1);
-          assert(sally.pets[0].name, 'boxer');
-          assert(typeof sally.pets[0].breed, 'undefined');
+          assert.equal(sally.pets.length, 1);
+          assert.equal(sally.pets[0].name, 'rex');
+          assert.equal(sally.pets[0].breed, 'boxer');
           return done();
         }
       });
