@@ -22,11 +22,6 @@ module.exports = {
       required: true
     },
 
-    select: {
-      example: ['foo'],
-      defaultsTo: ['*']
-    },
-
     where: {
       example: {},
       defaultsTo: {}
