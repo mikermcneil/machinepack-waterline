@@ -40,7 +40,7 @@ describe('machinepack-waterline: find', function() {
               breed: ['golden retriever', 'boxer']
             },
             skip: 0,
-            limit: 0,
+            limit: 1000,
             sort: []
           }
         ]
@@ -54,9 +54,9 @@ describe('machinepack-waterline: find', function() {
           assert(bob);
           assert.equal(bob.name, 'bob');
           assert.equal(bob.age, 40);
-          assert(bob.pets.length, 1);
-          assert(bob.pets[0].name, 'farley');
-          assert(typeof bob.pets[0].breed, 'undefined');
+          assert.equal(bob.pets.length, 1);
+          assert.equal(bob.pets[0].name, 'farley');
+          assert.equal(bob.pets[0].breed, 'golden retriever');
           var sally = _.find(users, {id: 2});
           assert(sally);
           assert.equal(sally.name, 'sally');
