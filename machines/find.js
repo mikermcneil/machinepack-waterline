@@ -133,10 +133,28 @@ module.exports = {
     var criteria = {
       where: inputs.where,
       limit: inputs.limit,
-      skip: inputs.skip,
-      sort: inputs.sort
+      skip: inputs.skip
     };
 
+    // Translate sort array into a dictionary.
+    criteria.sort = _.reduce(inputs.sort, function(memo, clause) {
+
+      var parts = clause.split(' ');
+
+      // Set default sort to asc
+      parts[1] = parts[1] ? parts[1].toLowerCase() : 'asc';
+
+      // Expand criteria.sort into object
+      memo[parts[0]] = parts[1];
+
+      return memo;
+
+    }, {});
+
+    // If there's no sort criteria, omit it from the criteria.
+    if (_.isEmpty(criteria.sort)) {
+      delete criteria.sort;
+    }
     // If we want to select only certain attributes, add that
     // to the query options.
     if (inputs.select) {
@@ -163,7 +181,27 @@ module.exports = {
       var criteria = _.omit(pInstruction, 'association');
       if (_.isEmpty(criteria.select)) {delete criteria.select;}
       if (_.isEmpty(criteria.where)) {delete criteria.where;}
-      if (_.isEmpty(criteria.sort)) {delete criteria.sort;}
+
+      // Translate sort array into a dictionary.
+      criteria.sort = _.reduce(inputs.sort, function(memo, clause) {
+
+        var parts = clause.split(' ');
+
+        // Set default sort to asc
+        parts[1] = parts[1] ? parts[1].toLowerCase() : 'asc';
+
+        // Expand criteria.sort into object
+        memo[parts[0]] = parts[1];
+
+        return memo;
+
+      }, {});
+
+      // If there's no sort criteria, omit it from the criteria.
+      if (_.isEmpty(criteria.sort)) {
+        delete criteria.sort;
+      }
+
       q = q.populate(pInstruction.association, criteria);
 
     });

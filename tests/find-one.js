@@ -63,6 +63,46 @@ describe('machinepack-waterline: find-one', function() {
 
     });
 
+
+    it('should sort populated records correctly', function(done) {
+
+      // Attempt to find "bob" and his cat's name
+      Waterline.findOne({
+        model: 'user',
+        where: {
+          name: 'bob'
+        },
+        populate: [
+          {
+            association: 'pets',
+            select: [],
+            where: {},
+            skip: 0,
+            limit: 0,
+            sort: ['breed desc']
+          }
+        ]
+      })
+      .setEnv({sails: app})
+      .exec({
+        error: done,
+        notFound: function() {
+          return done(new Error('Should not have called `notFound`!'));
+        },
+        success: function(bob) {
+          assert.equal(bob.name, 'bob');
+          assert.equal(bob.age, 40);
+          assert.equal(bob.pets.length, 2);
+          assert.equal(bob.pets[0].name, 'spot');
+          assert.equal(bob.pets[0].breed, 'siamese');
+          assert.equal(bob.pets[1].name, 'farley');
+          assert.equal(bob.pets[1].breed, 'golden retriever');
+          return done();
+        }
+      });
+
+    });
+
   });
 
   describe('when called for a record that does not exist', function() {

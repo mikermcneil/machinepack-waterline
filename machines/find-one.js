@@ -132,7 +132,27 @@ module.exports = {
       var criteria = _.omit(pInstruction, 'association');
       if (_.isEmpty(criteria.select)) {delete criteria.select;}
       if (_.isEmpty(criteria.where)) {delete criteria.where;}
-      if (_.isEmpty(criteria.sort)) {delete criteria.sort;}
+
+      // Translate sort array into a dictionary.
+      criteria.sort = _.reduce(pInstruction.sort, function(memo, clause) {
+
+        var parts = clause.split(' ');
+
+        // Set default sort to asc
+        parts[1] = parts[1] ? parts[1].toLowerCase() : 'asc';
+
+        // Expand criteria.sort into object
+        memo[parts[0]] = parts[1];
+
+        return memo;
+
+      }, {});
+
+      // If there's no sort criteria, omit it from the criteria.
+      if (_.isEmpty(criteria.sort)) {
+        delete criteria.sort;
+      }
+
       q = q.populate(pInstruction.association, criteria);
     });
 

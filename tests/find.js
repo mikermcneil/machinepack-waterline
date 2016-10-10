@@ -70,6 +70,53 @@ describe('machinepack-waterline: find', function() {
 
     });
 
+    it('should sort records correctly (including populated records)', function(done) {
+
+      // Attempt to find "bob" and "sally" their dog's names
+      Waterline.find({
+        model: 'user',
+        where: {
+          name: ['bob', 'sally']
+        },
+        sort: ['name desc'],
+        populate: [
+          {
+            where: {},
+            association: 'pets',
+            select: [],
+            skip: 0,
+            limit: 1000,
+            sort: ['breed desc']
+          }
+        ]
+      })
+      .setEnv({sails: app})
+      .exec({
+        error: done,
+        success: function(users) {
+          assert.equal(users.length, 2);
+          var bob = users[1];
+          assert(bob);
+          assert.equal(bob.name, 'bob');
+          assert.equal(bob.age, 40);
+          assert.equal(bob.pets.length, 2);
+          assert.equal(bob.pets[1].name, 'farley');
+          assert.equal(bob.pets[1].breed, 'golden retriever');
+          assert.equal(bob.pets[0].name, 'spot');
+          assert.equal(bob.pets[0].breed, 'siamese');
+          var sally = users[0];
+          assert(sally);
+          assert.equal(sally.name, 'sally');
+          assert.equal(sally.age, 29);
+          assert.equal(sally.pets.length, 1);
+          assert.equal(sally.pets[0].name, 'rex');
+          assert.equal(sally.pets[0].breed, 'boxer');
+          return done();
+        }
+      });
+
+    });
+
   });
 
 });
