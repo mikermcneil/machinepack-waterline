@@ -22,15 +22,37 @@ module.exports = {
       required: true
     },
 
+    attribute: {
+      description: 'The attribute to calculate the average of.',
+      example: 'age',
+      required: true
+    },
+
     where: {
+      description: 'The criteria to use in determining which records to average.',
       example: {},
       defaultsTo: {}
     },
 
-    attribute: {
-      example: 'age',
-      required: true
+    limit: {
+      description: 'The maximum number of records to average.',
+      example: 1000,
+      defaultsTo: 1000
     },
+
+    skip: {
+      description: 'The number of records to skip over before starting to calculate the average.',
+      example: 0,
+      defaultsTo: 0
+    },
+
+    sort: {
+      description: 'The attributes to use in sorting the result set before calculating the average.',
+      extendedDescription: 'By default, records are sorted by primary key value in ascending order.  Specify each sort clause as a separate string containing the name of the attribute to sort by, a space, and the direction (ASC or DESC) to sort in.',
+      example: ['name ASC'],
+      defaultsTo: []
+    },
+
 
     // connection: require('../constants/connection.input'),
 
