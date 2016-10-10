@@ -130,7 +130,7 @@ module.exports = {
     }
 
     // Start building query options.
-    var queryOptions = {
+    var criteria = {
       where: inputs.where,
       limit: inputs.limit,
       skip: inputs.skip,
@@ -140,11 +140,11 @@ module.exports = {
     // If we want to select only certain attributes, add that
     // to the query options.
     if (inputs.select) {
-      queryOptions.select = inputs.select;
+      criteria.select = inputs.select;
     }
 
     // Start building the query.
-    var q = Model.find(queryOptions);
+    var q = Model.find(criteria);
 
     // Use metadata if provided.
     if (!_.isUndefined(inputs.meta)) {
@@ -159,20 +159,13 @@ module.exports = {
     // Add in populate instructions, if provided.
     inputs.populate.forEach(function (pInstruction){
 
-      // Start building query options.
-      var queryOptions = {
-        where: pInstruction.where,
-        limit: pInstruction.limit,
-        skip: pInstruction.skip,
-        sort: pInstruction.sort
-      };
+      // Building query options for the association.
+      var criteria = _.omit(pInstruction, 'association');
+      if (_.isEmpty(criteria.select)) {delete criteria.select;}
+      if (_.isEmpty(criteria.where)) {delete criteria.where;}
+      if (_.isEmpty(criteria.sort)) {delete criteria.sort;}
+      q = q.populate(pInstruction.association, criteria);
 
-      // If we want to select only certain attributes, add that
-      // to the query options.
-      if (pInstruction.select.length) {
-        queryOptions.select = pInstruction.select;
-      }
-      q = q.populate(pInstruction.association, queryOptions);
     });
 
     // Execute the query.
