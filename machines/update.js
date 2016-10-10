@@ -23,12 +23,13 @@ module.exports = {
     },
 
     where: {
+      description: 'The criteria to use in determining which records to update.',
       example: {},
       defaultsTo: {}
     },
 
     attributes: {
-      description: 'The attributes that the new record should have.',
+      description: 'The new attribute values that matching records should be updated to.',
       example: '*'
     },
 

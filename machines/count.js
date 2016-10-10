@@ -23,6 +23,7 @@ module.exports = {
     },
 
     where: {
+      description: 'The criteria to use in determining which records to count.',
       example: {},
       defaultsTo: {}
     },

@@ -31,38 +31,44 @@ module.exports = {
     },
 
     select: {
-      example: ['foo']
+      example: ['foo'],
+      description: 'This input is not currently supported.'
     },
 
     where: {
+      description: 'The criteria to use in determining which records to return.',
       example: {},
       defaultsTo: {}
     },
 
     limit: {
-      example: -1,
-      defaultsTo: -1
+      description: 'The maximum number of records to return.',
+      example: 1000,
+      defaultsTo: 1000
     },
 
     skip: {
+      description: 'The number of records to skip over before starting to returning results.',
       example: 0,
       defaultsTo: 0
     },
 
     sort: {
+      description: 'The attributes to use in sorting the result set.',
+      extendedDescription: 'By default, returned records are sorted by primary key value in ascending order.  Specify each sort clause as a separate string containing the name of the attribute to sort by, a space, and the direction (ASC or DESC) to sort in.',
       example: ['name ASC'],
       defaultsTo: []
     },
 
     populate: {
       description: 'An array of assocations to populate.',
-      extendedDescription: 'Each record returned in the result array will also contain related data according to these criteria.',
+      extendedDescription: 'Each record returned in the result array will also contain related data according to the specified criteria.',
       example: [
         {
           association: 'friends',
           select: ['foo'],
           where: {},
-          limit: -1,
+          limit: 1000,
           skip: 0,
           sort: ['name ASC']
         }

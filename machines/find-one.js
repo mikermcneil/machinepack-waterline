@@ -31,23 +31,25 @@ module.exports = {
     },
 
     select: {
-      example: ['foo']
+      example: ['foo'],
+      description: 'This input is not currently supported.'
     },
 
     where: {
+      description: 'The criteria to use in determining which record to return.',
       example: {},
       defaultsTo: {}
     },
 
     populate: {
       description: 'An array of assocations to populate.',
-      extendedDescription: 'Each record returned in the result array will also contain related data according to these criteria.',
+      extendedDescription: 'Each record returned in the result array will also contain related data according the specified criteria.',
       example: [
         {
           association: 'friends',
           select: ['foo'],
           where: {},
-          limit: -1,
+          limit: 1000,
           skip: 0,
           sort: ['name ASC']
         }
