@@ -30,6 +30,7 @@
         "breed": "himalayan",
         "createdAt": "2016-08-03T02:45:01.062Z",
         "updatedAt": "2016-08-03T02:45:01.062Z",
+        "owner": 3,
         "id": 4
       },
       {
@@ -37,6 +38,7 @@
         "breed": "dalmation",
         "createdAt": "2016-08-03T03:29:42.432Z",
         "updatedAt": "2016-08-03T03:29:42.432Z",
+        "owner": 3,
         "id": 5
       },
       {
@@ -44,6 +46,7 @@
         "breed": "tabby",
         "createdAt": "2016-08-03T03:29:42.433Z",
         "updatedAt": "2016-08-03T03:29:42.433Z",
+        "owner": 3,
         "id": 6
       },
       {
