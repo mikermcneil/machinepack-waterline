@@ -135,7 +135,7 @@ describe('machinepack-waterline: find', function() {
           where: {},
           skip: 1,
           limit: 2,
-          sort: ['name desc']
+          sort: ['breed desc']
         }
       ]
     })
@@ -143,7 +143,6 @@ describe('machinepack-waterline: find', function() {
     .exec({
       error: done,
       success: function(users) {
-        console.dir(users, {depth: null});
         assert.equal(users.length, 2);
         var bob = users[1];
         assert(bob);
@@ -157,8 +156,8 @@ describe('machinepack-waterline: find', function() {
         assert.equal(joe.name, 'joe');
         assert.equal(joe.age, 12);
         assert.equal(joe.pets.length, 2);
-        assert.equal(joe.pets[0].name, 'princess');
-        assert.equal(joe.pets[0].breed, 'tabby');
+        assert.equal(joe.pets[0].name, 'roscoe');
+        assert.equal(joe.pets[0].breed, 'himalayan');
         assert.equal(joe.pets[1].name, 'argus');
         assert.equal(joe.pets[1].breed, 'dalmation');
         return done();

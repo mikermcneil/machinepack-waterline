@@ -183,7 +183,7 @@ module.exports = {
       if (_.isEmpty(criteria.where)) {delete criteria.where;}
 
       // Translate sort array into a dictionary.
-      criteria.sort = _.reduce(inputs.sort, function(memo, clause) {
+      criteria.sort = _.reduce(pInstruction.sort, function(memo, clause) {
 
         var parts = clause.split(' ');
 
