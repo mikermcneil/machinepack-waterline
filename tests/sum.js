@@ -63,28 +63,88 @@ describe('machinepack-waterline: sum', function() {
 
     });
 
-  });
+    it('should work correctly with limit, skip and sort', function(done) {
 
-  describe('when called with an an invalid attribute', function() {
-
-    it('should call the `invalidAttribute` exit', function(done) {
-
-      // Get the average age of the users
+      // Get the average age of "sally" and "anne"
       Waterline.sum({
         model: 'user',
-        attribute: 'xxx'
+        attribute: 'age',
+        limit: 2,
+        skip: 1,
+        sort: ['age asc']
       })
       .setEnv({sails: app})
       .exec({
         error: done,
-        success: function() {
-          return done(new Error('Should not have called the `success` exit!'));
-        },
-        invalidAttribute: function(){done();}
+        success: function(age) {
+          assert.equal(age, 61);
+          return done();
+        }
       });
 
     });
 
+  });
+
+  it('should call the `invalidAttribute` exit when called with an an invalid attribute', function(done) {
+
+    // Get the average age of the users
+    Waterline.sum({
+      model: 'user',
+      attribute: 'xxx'
+    })
+    .setEnv({sails: app})
+    .exec({
+      error: done,
+      success: function() {
+        return done(new Error('Should not have called the `success` exit!'));
+      },
+      invalidAttribute: function(){done();}
+    });
+
+  });
+
+  it('should call the error exit when called with an invalid `skip` value', function(done) {
+
+    Waterline.sum({
+      model: 'user',
+      attribute: 'age',
+      limit: 2,
+      skip: -1,
+      sort: ['age asc']
+    })
+    .setEnv({sails: app})
+    .exec({
+      error: function(){return done();},
+      success: function() {
+        return done(new Error('Should not have called the `success` exit!'));
+      },
+      invalidAttribute: function(){
+        return done(new Error('Should not have called the `invalidAttribute` exit!'));
+      }
+    });
+
+  });
+
+  it('should call the error exit when called with an invalid `limit` value', function(done) {
+
+    Waterline.sum({
+      model: 'user',
+      attribute: 'age',
+      limit: -2,
+      skip: 1,
+      sort: ['age asc']
+    })
+    .setEnv({sails: app})
+    .exec({
+      error: function(){return done();},
+      success: function() {
+        return done(new Error('Should not have called the `success` exit!'));
+      },
+      invalidAttribute: function(){
+        return done(new Error('Should not have called the `invalidAttribute` exit!'));
+      }
+    });
 
   });
 });

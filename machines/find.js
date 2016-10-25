@@ -121,6 +121,16 @@ module.exports = {
       throw new Error('The `select` feature is currently not supported.');
     }
 
+    // If "limit" is not a positive, whole number, bounce.
+    if (inputs.limit <= 0 || Math.floor(inputs.limit) !== inputs.limit) {
+      return exits.error(new Error('The `limit` input must be a positive, whole number.'));
+    }
+
+    // If "skip" is not a non-negative, whole number, bounce.
+    if (inputs.skip < 0 || Math.floor(inputs.skip) !== inputs.skip) {
+      return exits.error(new Error('The `skip` input must be a non-negative, whole number.'));
+    }
+
     // Find the model class indicated by the `inputs.model` value.
     var Model = env.sails.hooks.orm.models[inputs.model];
 
@@ -174,37 +184,52 @@ module.exports = {
       q = q.usingConnection(inputs.connection);
     }
 
-    // Add in populate instructions, if provided.
-    inputs.populate.forEach(function (pInstruction){
+    try {
+      // Add in populate instructions, if provided.
+      inputs.populate.forEach(function (pInstruction){
 
-      // Building query options for the association.
-      var criteria = _.omit(pInstruction, 'association');
-      if (_.isEmpty(criteria.select)) {delete criteria.select;}
-      if (_.isEmpty(criteria.where)) {delete criteria.where;}
+        // Building query options for the association.
+        var criteria = _.omit(pInstruction, 'association');
+        if (_.isEmpty(criteria.select)) {delete criteria.select;}
+        if (_.isEmpty(criteria.where)) {delete criteria.where;}
 
-      // Translate sort array into a dictionary.
-      criteria.sort = _.reduce(pInstruction.sort, function(memo, clause) {
+        // If "limit" is not a positive, whole number, bounce.
+        if (criteria.limit <= 0 || Math.floor(criteria.limit) !== criteria.limit) {
+          throw new Error('In criteria for populating `' + pInstruction.association + '`: the `limit` criteria must be a positive, whole number.');
+        }
 
-        var parts = clause.split(' ');
+        // If "skip" is not a non-negative, whole number, bounce.
+        if (criteria.skip < 0 || Math.floor(criteria.skip) !== criteria.skip) {
+          throw new Error('In criteria for populating `' + pInstruction.association + '`: the `skip` input must be a non-negative, whole number.');
+        }
 
-        // Set default sort to asc
-        parts[1] = parts[1] ? parts[1].toLowerCase() : 'asc';
+        // Translate sort array into a dictionary.
+        criteria.sort = _.reduce(pInstruction.sort, function(memo, clause) {
 
-        // Expand criteria.sort into object
-        memo[parts[0]] = parts[1];
+          var parts = clause.split(' ');
 
-        return memo;
+          // Set default sort to asc
+          parts[1] = parts[1] ? parts[1].toLowerCase() : 'asc';
 
-      }, {});
+          // Expand criteria.sort into object
+          memo[parts[0]] = parts[1];
 
-      // If there's no sort criteria, omit it from the criteria.
-      if (_.isEmpty(criteria.sort)) {
-        delete criteria.sort;
-      }
+          return memo;
 
-      q = q.populate(pInstruction.association, criteria);
+        }, {});
 
-    });
+        // If there's no sort criteria, omit it from the criteria.
+        if (_.isEmpty(criteria.sort)) {
+          delete criteria.sort;
+        }
+
+        q = q.populate(pInstruction.association, criteria);
+
+      });
+
+    } catch (e) {
+      return exits.error(e);
+    }
 
     // Execute the query.
     q.exec(function afterwards(err, records, meta) {

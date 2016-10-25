@@ -166,6 +166,118 @@ describe('machinepack-waterline: find', function() {
 
   });
 
+  it('should trigger the `error` exit when called with invalid `skip` in main criteria', function(done) {
+
+    // Attempt to find "bob" and "sally" their dog's names
+    Waterline.find({
+      model: 'user',
+      where: {},
+      skip: -1,
+      limit: 2,
+      sort: ['name desc'],
+      populate: [
+        {
+          association: 'pets',
+          select: [],
+          where: {},
+          skip: 1,
+          limit: 2,
+          sort: ['breed desc']
+        }
+      ]
+    })
+    .setEnv({sails: app})
+    .exec({
+      error: function() {return done();},
+      success: function() {return done(new Error('Should have triggered `error`, but triggered `success` instead!'));}
+    });
+
+  });
+
+  it('should trigger the `error` exit when called with invalid `limit` in main criteria', function(done) {
+
+    // Attempt to find "bob" and "sally" their dog's names
+    Waterline.find({
+      model: 'user',
+      where: {},
+      skip: 0,
+      limit: 2.5,
+      sort: ['name desc'],
+      populate: [
+        {
+          association: 'pets',
+          select: [],
+          where: {},
+          skip: 1,
+          limit: 2,
+          sort: ['breed desc']
+        }
+      ]
+    })
+    .setEnv({sails: app})
+    .exec({
+      error: function() {return done();},
+      success: function() {return done(new Error('Should have triggered `error`, but triggered `success` instead!'));}
+    });
+
+  });
+
+  it('should trigger the `error` exit when called with invalid `skip` in populated criteria', function(done) {
+
+    // Attempt to find "bob" and "sally" their dog's names
+    Waterline.find({
+      model: 'user',
+      where: {},
+      skip: 0,
+      limit: 1000,
+      sort: ['name desc'],
+      populate: [
+        {
+          association: 'pets',
+          select: [],
+          where: {},
+          skip: 1.5,
+          limit: 2,
+          sort: ['breed desc']
+        }
+      ]
+    })
+    .setEnv({sails: app})
+    .exec({
+      error: function() {return done();},
+      success: function() {return done(new Error('Should have triggered `error`, but triggered `success` instead!'));}
+    });
+
+  });
+
+  it('should trigger the `error` exit when called with invalid `limit` in populated criteria', function(done) {
+
+    // Attempt to find "bob" and "sally" their dog's names
+    Waterline.find({
+      model: 'user',
+      where: {},
+      skip: 0,
+      limit: 1000,
+      sort: ['name desc'],
+      populate: [
+        {
+          association: 'pets',
+          select: [],
+          where: {},
+          skip: 0,
+          limit: -2,
+          sort: ['breed desc']
+        }
+      ]
+    })
+    .setEnv({sails: app})
+    .exec({
+      error: function() {return done();},
+      success: function() {return done(new Error('Should have triggered `error`, but triggered `success` instead!'));}
+    });
+
+  });
+
 });
 
 

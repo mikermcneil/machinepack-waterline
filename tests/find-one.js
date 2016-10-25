@@ -40,7 +40,7 @@ describe('machinepack-waterline: find-one', function() {
               breed: 'siamese'
             },
             skip: 0,
-            limit: 0,
+            limit: 1000,
             sort: []
           }
         ]
@@ -78,7 +78,7 @@ describe('machinepack-waterline: find-one', function() {
             select: [],
             where: {},
             skip: 0,
-            limit: 0,
+            limit: 1000,
             sort: ['breed desc']
           }
         ]
@@ -129,6 +129,62 @@ describe('machinepack-waterline: find-one', function() {
     });
 
   });
+
+  it('should trigger the `error` exit when called with invalid `skip` in populated criteria', function(done) {
+
+    // Attempt to find "bob" and his cat's name
+    Waterline.findOne({
+      model: 'user',
+      where: {
+        name: 'bob'
+      },
+      populate: [
+        {
+          association: 'pets',
+          select: [],
+          where: {},
+          skip: -1,
+          limit: 1000,
+          sort: ['breed desc']
+        }
+      ]
+    })
+    .setEnv({sails: app})
+    .exec({
+      error: function() {return done();},
+      success: function() {return done(new Error('Should have triggered `error`, but triggered `success` instead!'));}
+    });
+
+  });
+
+  it('should trigger the `error` exit when called with invalid `limit` in populated criteria', function(done) {
+
+    // Attempt to find "bob" and "sally" their dog's names
+    // Attempt to find "bob" and his cat's name
+    Waterline.findOne({
+      model: 'user',
+      where: {
+        name: 'bob'
+      },
+      populate: [
+        {
+          association: 'pets',
+          select: [],
+          where: {},
+          skip: 0,
+          limit: -1,
+          sort: ['breed desc']
+        }
+      ]
+    })
+    .setEnv({sails: app})
+    .exec({
+      error: function() {return done();},
+      success: function() {return done(new Error('Should have triggered `error`, but triggered `success` instead!'));}
+    });
+
+  });
+
 
 });
 

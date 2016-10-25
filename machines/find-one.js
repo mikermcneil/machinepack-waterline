@@ -126,35 +126,51 @@ module.exports = {
     // Start building the query.
     var q = Model.findOne(criteria);
 
-    // Add in populate instructions, if provided.
-    inputs.populate.forEach(function (pInstruction){
-      // Building query options for the association.
-      var criteria = _.omit(pInstruction, 'association');
-      if (_.isEmpty(criteria.select)) {delete criteria.select;}
-      if (_.isEmpty(criteria.where)) {delete criteria.where;}
+    try {
 
-      // Translate sort array into a dictionary.
-      criteria.sort = _.reduce(pInstruction.sort, function(memo, clause) {
+      // Add in populate instructions, if provided.
+      inputs.populate.forEach(function (pInstruction){
+        // Building query options for the association.
+        var criteria = _.omit(pInstruction, 'association');
+        if (_.isEmpty(criteria.select)) {delete criteria.select;}
+        if (_.isEmpty(criteria.where)) {delete criteria.where;}
 
-        var parts = clause.split(' ');
+        // If "limit" is not a positive, whole number, bounce.
+        if (criteria.limit <= 0 || Math.floor(criteria.limit) !== criteria.limit) {
+          throw new Error('In criteria for populating `' + pInstruction.association + '`: the `limit` criteria must be a positive, whole number.');
+        }
 
-        // Set default sort to asc
-        parts[1] = parts[1] ? parts[1].toLowerCase() : 'asc';
+        // If "skip" is not a non-negative, whole number, bounce.
+        if (criteria.skip < 0 || Math.floor(criteria.skip) !== criteria.skip) {
+          throw new Error('In criteria for populating `' + pInstruction.association + '`: the `skip` input must be a non-negative, whole number.');
+        }
 
-        // Expand criteria.sort into object
-        memo[parts[0]] = parts[1];
+        // Translate sort array into a dictionary.
+        criteria.sort = _.reduce(pInstruction.sort, function(memo, clause) {
 
-        return memo;
+          var parts = clause.split(' ');
 
-      }, {});
+          // Set default sort to asc
+          parts[1] = parts[1] ? parts[1].toLowerCase() : 'asc';
 
-      // If there's no sort criteria, omit it from the criteria.
-      if (_.isEmpty(criteria.sort)) {
-        delete criteria.sort;
-      }
+          // Expand criteria.sort into object
+          memo[parts[0]] = parts[1];
 
-      q = q.populate(pInstruction.association, criteria);
-    });
+          return memo;
+
+        }, {});
+
+        // If there's no sort criteria, omit it from the criteria.
+        if (_.isEmpty(criteria.sort)) {
+          delete criteria.sort;
+        }
+
+        q = q.populate(pInstruction.association, criteria);
+      });
+
+    } catch (e) {
+      return exits.error(e);
+    }
 
     // Use metadata if provided.
     if (!_.isUndefined(inputs.meta)) {

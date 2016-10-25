@@ -95,6 +95,16 @@ module.exports = {
       return exits.error(new Error('`sails.hooks.orm` cannot be accessed; please ensure this machine is being run in a compatible habitat.'));
     }
 
+    // If "limit" is not a positive, whole number, bounce.
+    if (inputs.limit <= 0 || Math.floor(inputs.limit) !== inputs.limit) {
+      return exits.error(new Error('The `limit` input must be a positive, whole number.'));
+    }
+
+    // If "skip" is not a non-negative, whole number, bounce.
+    if (inputs.skip < 0 || Math.floor(inputs.skip) !== inputs.skip) {
+      return exits.error(new Error('The `skip` input must be a non-negative, whole number.'));
+    }
+
     // Find the model class indicated by the `inputs.model` value.
     var Model = env.sails.hooks.orm.models[inputs.model];
 
@@ -108,8 +118,35 @@ module.exports = {
       return exits.invalidAttribute();
     }
 
+    // Start building query options.
+    var criteria = {
+      where: inputs.where,
+      limit: inputs.limit,
+      skip: inputs.skip
+    };
+
+    // Translate sort array into a dictionary.
+    criteria.sort = _.reduce(inputs.sort, function(memo, clause) {
+
+      var parts = clause.split(' ');
+
+      // Set default sort to asc
+      parts[1] = parts[1] ? parts[1].toLowerCase() : 'asc';
+
+      // Expand criteria.sort into object
+      memo[parts[0]] = parts[1];
+
+      return memo;
+
+    }, {});
+
+    // If there's no sort criteria, omit it from the criteria.
+    if (_.isEmpty(criteria.sort)) {
+      delete criteria.sort;
+    }
+
     // Start building the query.
-    var q = Model.find(inputs.where).average(inputs.attribute);
+    var q = Model.find(criteria).average(inputs.attribute);
 
     // Use metadata if provided.
     if (!_.isUndefined(inputs.meta)) {
