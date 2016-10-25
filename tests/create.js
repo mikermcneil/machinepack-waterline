@@ -26,12 +26,12 @@ describe('machinepack-waterline: create', function() {
 
     it('should add the new model instance', function(done) {
 
-      // Attempt to add a new user "roscoe" with pet "argus"
+      // Attempt to add a new user "bubba" with pet "argus"
       Waterline.create({
         model: 'user',
         attributes: {
           name: 'bubba',
-          age: '22',
+          age: 22,
           pets: [4,5]
         }
       })
@@ -51,6 +51,33 @@ describe('machinepack-waterline: create', function() {
             return done();
           });
 
+        }
+      });
+
+    });
+
+  });
+
+  describe('when called with invalid attributes', function() {
+
+    it('should trigger the `invalidAttributes` exit', function(done) {
+
+      // Attempt to add a new user with invalid attributes
+      Waterline.create({
+        model: 'user',
+        attributes: {
+          name: {abc:123},
+          age: 'foobar'
+        }
+      })
+      .setEnv({sails: app})
+      .exec({
+        error: function(err) {return done(new Error('Should have triggered invalidAttributes exit, but triggered `error` instead!'));},
+        success: function(output) {return done(new Error('Should have triggered invalidAttributes exit, but triggered `success` instead!'));},
+        invalidAttributes: function(err) {
+          assert(err.name);
+          assert(err.age);
+          return done();
         }
       });
 

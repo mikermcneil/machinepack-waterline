@@ -49,7 +49,7 @@ module.exports = {
       like: 'pkSchema'
     },
 
-    // invalidAttributes: require('../constants/invalidAttributes.exit')
+    invalidAttributes: require('../constants/invalidAttributes.exit')
   },
 
 
@@ -121,8 +121,13 @@ module.exports = {
     q.exec(function afterwards(err, recordOrPk, meta) {
       // Forward any errors to the `error` exit.
       if (err) {
-        // TODO: handle `exits.invalidAttributes()`
+
+        // Check for a validation error (aka UNIQUENESS)
+        if(err.code === 'E_VALIDATION') {
+          return exits.invalidAttributes(err.invalidAttributes);
+        }
         return exits.error(err);
+
       }
 
       // Get the primary key of the newly-inserted record.

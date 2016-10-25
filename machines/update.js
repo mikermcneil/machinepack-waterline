@@ -48,7 +48,7 @@ module.exports = {
       outputExample: 123
     },
 
-    // invalidAttributes: require('../constants/invalidAttributes.exit'),
+    invalidAttributes: require('../constants/invalidAttributes.exit'),
 
     // invalidCriteria: {
     //   description: 'The provided `where` was invalid.'
@@ -98,7 +98,10 @@ module.exports = {
       // Forward any errors to the `error` exit.
       if (err) {
         // TODO: handle `exits.invalidCriteria()`
-        // TODO: handle `exits.invalidAttributes()`
+        // Check for a validation error (aka UNIQUENESS)
+        if(err.code === 'E_VALIDATION') {
+          return exits.invalidAttributes(err.invalidAttributes);
+        }
         return exits.error(err);
       }
       // Determine the number of records that were updated (if any).

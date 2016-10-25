@@ -55,6 +55,35 @@ describe('machinepack-waterline: update', function() {
 
   });
 
+  describe('when called with invalid attributes', function() {
+
+    it('should trigger the `invalidAttributes` exit', function(done) {
+
+      // Attempt to add a update pet with invalid attributes
+      Waterline.update({
+        model: 'pet',
+        where: {
+          name: 'princess'
+        },
+        attributes: {
+          name: {foo: 'bar'}
+        }
+      })
+      .setEnv({sails: app})
+      .exec({
+        error: function(err) {return done(new Error('Should have triggered invalidAttributes exit, but triggered `error` instead!'));},
+        success: function(output) {return done(new Error('Should have triggered invalidAttributes exit, but triggered `success` instead!'));},
+        invalidAttributes: function(err) {
+          assert(err.name);
+          return done();
+        }
+      });
+
+    });
+
+  });
+
+
 });
 
 
